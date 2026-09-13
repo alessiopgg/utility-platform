@@ -39,6 +39,7 @@
     "@ffmpeg/core": "0.12.10"
   },
   "devDependencies": {
-    "typescript": "7.0.0"
+    "typescript": "7.0.2"
   }
 }
+
