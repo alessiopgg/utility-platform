@@ -1,0 +1,7 @@
+---
+import CategoryContent from '../../../components/CategoryContent.astro';
+import { categories, tools } from '../../../core/registry.ts';
+export function getStaticPaths(){ return categories.filter((category)=>tools.some((tool)=>tool.categorySlug===category.slug&&tool.implemented)).map((category)=>({params:{category:category.slug},props:{categorySlug:category.slug}})); }
+const { categorySlug } = Astro.props as { categorySlug: string };
+---
+<CategoryContent locale="en" categorySlug={categorySlug} />

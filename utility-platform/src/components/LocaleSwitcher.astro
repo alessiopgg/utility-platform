@@ -1,0 +1,20 @@
+---
+import { locales, localeMeta } from '../i18n/config.ts';
+import type { LocaleId } from '../core/types.ts';
+interface Props { locale: LocaleId; paths: Partial<Record<LocaleId,string>>; label: string; }
+const { locale, paths, label } = Astro.props;
+---
+<label>
+  <span class="sr-only">{label}</span>
+  <select class="locale-select" aria-label={label} data-locale-switcher>
+    {locales.map((id) => <option value={paths[id] ?? '/'} selected={id === locale}>{localeMeta[id].label}</option>)}
+  </select>
+</label>
+<script>
+  const select = document.querySelector('[data-locale-switcher]');
+  select?.addEventListener('change', (event) => {
+    const target = event.currentTarget;
+    if (target instanceof HTMLSelectElement) window.location.href = target.value;
+  });
+</script>
+<style>.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}</style>

@@ -1,0 +1,2167 @@
+{
+  "version": "1.0",
+  "tool_count": 429,
+  "locales": [
+    "en",
+    "es",
+    "pt-BR",
+    "de",
+    "fr",
+    "it",
+    "ja",
+    "ar",
+    "id",
+    "tr",
+    "pl",
+    "ko",
+    "nl",
+    "vi"
+  ],
+  "tools": [
+    {
+      "id": "percentage-calculator",
+      "name": "Percentage Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "percentage-increase-calculator",
+      "name": "Percentage Increase Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "percentage-decrease-calculator",
+      "name": "Percentage Decrease Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "percentage-difference-calculator",
+      "name": "Percentage Difference Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "reverse-percentage-calculator",
+      "name": "Reverse Percentage Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "fraction-calculator",
+      "name": "Fraction Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "fraction-to-decimal",
+      "name": "Fraction to Decimal",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "decimal-to-fraction",
+      "name": "Decimal to Fraction",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "ratio-calculator",
+      "name": "Ratio Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "proportion-calculator",
+      "name": "Proportion Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "average-calculator",
+      "name": "Average Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "weighted-average-calculator",
+      "name": "Weighted Average Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "median-calculator",
+      "name": "Median Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "mode-calculator",
+      "name": "Mode Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "standard-deviation-calculator",
+      "name": "Standard Deviation Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "rule-of-three-calculator",
+      "name": "Rule of Three Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "scientific-notation-converter",
+      "name": "Scientific Notation Converter",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "square-root-calculator",
+      "name": "Square Root Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "exponent-calculator",
+      "name": "Exponent Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "logarithm-calculator",
+      "name": "Logarithm Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "factorial-calculator",
+      "name": "Factorial Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "gcd-calculator",
+      "name": "GCD Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "lcm-calculator",
+      "name": "LCM Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "prime-number-checker",
+      "name": "Prime Number Checker",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "prime-factorization-calculator",
+      "name": "Prime Factorization Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "rounding-calculator",
+      "name": "Rounding Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "significant-figures-calculator",
+      "name": "Significant Figures Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "percentage-error-calculator",
+      "name": "Percentage Error Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "absolute-difference-calculator",
+      "name": "Absolute Difference Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "range-calculator",
+      "name": "Range Calculator",
+      "category": "Calculators — Math & Everyday"
+    },
+    {
+      "id": "margin-calculator",
+      "name": "Margin Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "markup-calculator",
+      "name": "Markup Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "profit-calculator",
+      "name": "Profit Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "break-even-calculator",
+      "name": "Break-even Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "roi-calculator",
+      "name": "ROI Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "roas-calculator",
+      "name": "ROAS Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "cac-calculator",
+      "name": "CAC Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "ltv-calculator",
+      "name": "LTV Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "conversion-rate-calculator",
+      "name": "Conversion Rate Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "churn-rate-calculator",
+      "name": "Churn Rate Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "growth-rate-calculator",
+      "name": "Growth Rate Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "cagr-calculator",
+      "name": "CAGR Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "simple-interest-calculator",
+      "name": "Simple Interest Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "compound-interest-calculator",
+      "name": "Compound Interest Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "loan-payment-calculator",
+      "name": "Loan Payment Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "amortization-calculator",
+      "name": "Amortization Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "savings-goal-calculator",
+      "name": "Savings Goal Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "discount-calculator",
+      "name": "Discount Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "sale-price-calculator",
+      "name": "Sale Price Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "price-per-unit-calculator",
+      "name": "Price Per Unit Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "cpm-calculator",
+      "name": "CPM Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "cpc-calculator",
+      "name": "CPC Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "ctr-calculator",
+      "name": "CTR Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "revenue-calculator",
+      "name": "Revenue Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "profit-margin-calculator",
+      "name": "Profit Margin Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "inventory-turnover-calculator",
+      "name": "Inventory Turnover Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "burn-rate-calculator",
+      "name": "Burn Rate Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "runway-calculator",
+      "name": "Runway Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "commission-calculator",
+      "name": "Commission Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "unit-economics-calculator",
+      "name": "Unit Economics Calculator",
+      "category": "Calculators — Business & Finance"
+    },
+    {
+      "id": "concrete-calculator",
+      "name": "Concrete Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "cement-calculator",
+      "name": "Cement Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "brick-calculator",
+      "name": "Brick Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "concrete-block-calculator",
+      "name": "Concrete Block Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "tile-calculator",
+      "name": "Tile Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "flooring-calculator",
+      "name": "Flooring Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "hardwood-calculator",
+      "name": "Hardwood Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "laminate-calculator",
+      "name": "Laminate Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "carpet-calculator",
+      "name": "Carpet Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "paint-calculator",
+      "name": "Paint Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "wallpaper-calculator",
+      "name": "Wallpaper Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "drywall-calculator",
+      "name": "Drywall Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "plaster-calculator",
+      "name": "Plaster Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "gravel-calculator",
+      "name": "Gravel Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "sand-calculator",
+      "name": "Sand Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "mulch-calculator",
+      "name": "Mulch Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "soil-calculator",
+      "name": "Soil Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "asphalt-calculator",
+      "name": "Asphalt Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "paver-calculator",
+      "name": "Paver Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "stone-calculator",
+      "name": "Stone Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "roof-pitch-calculator",
+      "name": "Roof Pitch Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "roof-area-calculator",
+      "name": "Roof Area Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "rafter-length-calculator",
+      "name": "Rafter Length Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "stair-calculator",
+      "name": "Stair Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "deck-board-calculator",
+      "name": "Deck Board Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "deck-material-calculator",
+      "name": "Deck Material Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "fence-calculator",
+      "name": "Fence Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "post-spacing-calculator",
+      "name": "Post Spacing Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "stud-calculator",
+      "name": "Stud Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "lumber-calculator",
+      "name": "Lumber Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "board-foot-calculator",
+      "name": "Board Foot Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "insulation-calculator",
+      "name": "Insulation Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "gutter-calculator",
+      "name": "Gutter Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "concrete-slab-calculator",
+      "name": "Concrete Slab Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "concrete-footing-calculator",
+      "name": "Concrete Footing Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "retaining-wall-calculator",
+      "name": "Retaining Wall Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "driveway-material-calculator",
+      "name": "Driveway Material Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "pool-volume-calculator",
+      "name": "Pool Volume Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "pond-volume-calculator",
+      "name": "Pond Volume Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "room-area-calculator",
+      "name": "Room Area Calculator",
+      "category": "Calculators — Construction & DIY"
+    },
+    {
+      "id": "dpi-calculator",
+      "name": "DPI Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "ppi-calculator",
+      "name": "PPI Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "print-size-calculator",
+      "name": "Print Size Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "megapixel-calculator",
+      "name": "Megapixel Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "sensor-crop-factor-calculator",
+      "name": "Sensor Crop Factor Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "equivalent-focal-length-calculator",
+      "name": "Equivalent Focal Length Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "depth-of-field-calculator",
+      "name": "Depth of Field Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "hyperfocal-distance-calculator",
+      "name": "Hyperfocal Distance Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "exposure-calculator",
+      "name": "Exposure Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "shutter-speed-calculator",
+      "name": "Shutter Speed Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "long-exposure-calculator",
+      "name": "Long Exposure Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "nd-filter-calculator",
+      "name": "ND Filter Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "field-of-view-calculator",
+      "name": "Field of View Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "image-resolution-calculator",
+      "name": "Image Resolution Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "print-resolution-checker",
+      "name": "Print Resolution Checker",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "aspect-ratio-calculator",
+      "name": "Aspect Ratio Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "aspect-ratio-converter",
+      "name": "Aspect Ratio Converter",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "video-bitrate-calculator",
+      "name": "Video Bitrate Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "video-file-size-calculator",
+      "name": "Video File Size Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "audio-file-size-calculator",
+      "name": "Audio File Size Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "timelapse-storage-calculator",
+      "name": "Timelapse Storage Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "timelapse-interval-calculator",
+      "name": "Timelapse Interval Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "storage-capacity-calculator",
+      "name": "Storage Capacity Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "raw-storage-calculator",
+      "name": "RAW Storage Calculator",
+      "category": "Calculators — Photography & Creator"
+    },
+    {
+      "id": "word-counter",
+      "name": "Word Counter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "character-counter",
+      "name": "Character Counter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "sentence-counter",
+      "name": "Sentence Counter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "paragraph-counter",
+      "name": "Paragraph Counter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "reading-time-calculator",
+      "name": "Reading Time Calculator",
+      "category": "Text Tools"
+    },
+    {
+      "id": "speaking-time-calculator",
+      "name": "Speaking Time Calculator",
+      "category": "Text Tools"
+    },
+    {
+      "id": "uppercase-converter",
+      "name": "Uppercase Converter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "lowercase-converter",
+      "name": "Lowercase Converter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "title-case-converter",
+      "name": "Title Case Converter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "sentence-case-converter",
+      "name": "Sentence Case Converter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "camel-case-converter",
+      "name": "Camel Case Converter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "snake-case-converter",
+      "name": "Snake Case Converter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "kebab-case-converter",
+      "name": "Kebab Case Converter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "remove-duplicate-lines",
+      "name": "Remove Duplicate Lines",
+      "category": "Text Tools"
+    },
+    {
+      "id": "sort-lines",
+      "name": "Sort Lines",
+      "category": "Text Tools"
+    },
+    {
+      "id": "reverse-text",
+      "name": "Reverse Text",
+      "category": "Text Tools"
+    },
+    {
+      "id": "reverse-lines",
+      "name": "Reverse Lines",
+      "category": "Text Tools"
+    },
+    {
+      "id": "remove-empty-lines",
+      "name": "Remove Empty Lines",
+      "category": "Text Tools"
+    },
+    {
+      "id": "remove-extra-spaces",
+      "name": "Remove Extra Spaces",
+      "category": "Text Tools"
+    },
+    {
+      "id": "trim-lines",
+      "name": "Trim Lines",
+      "category": "Text Tools"
+    },
+    {
+      "id": "find-and-replace",
+      "name": "Find and Replace",
+      "category": "Text Tools"
+    },
+    {
+      "id": "text-diff",
+      "name": "Text Diff",
+      "category": "Text Tools"
+    },
+    {
+      "id": "remove-line-breaks",
+      "name": "Remove Line Breaks",
+      "category": "Text Tools"
+    },
+    {
+      "id": "add-line-numbers",
+      "name": "Add Line Numbers",
+      "category": "Text Tools"
+    },
+    {
+      "id": "randomize-lines",
+      "name": "Randomize Lines",
+      "category": "Text Tools"
+    },
+    {
+      "id": "alphabetize-list",
+      "name": "Alphabetize List",
+      "category": "Text Tools"
+    },
+    {
+      "id": "word-frequency-counter",
+      "name": "Word Frequency Counter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "unique-word-counter",
+      "name": "Unique Word Counter",
+      "category": "Text Tools"
+    },
+    {
+      "id": "duplicate-word-finder",
+      "name": "Duplicate Word Finder",
+      "category": "Text Tools"
+    },
+    {
+      "id": "text-to-slug",
+      "name": "Text to Slug",
+      "category": "Text Tools"
+    },
+    {
+      "id": "json-formatter",
+      "name": "JSON Formatter",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-beautifier",
+      "name": "JSON Beautifier",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-minifier",
+      "name": "JSON Minifier",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-validator",
+      "name": "JSON Validator",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-viewer",
+      "name": "JSON Viewer",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-to-csv",
+      "name": "JSON to CSV",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "csv-to-json",
+      "name": "CSV to JSON",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-to-xml",
+      "name": "JSON to XML",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "xml-to-json",
+      "name": "XML to JSON",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-to-yaml",
+      "name": "JSON to YAML",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "yaml-to-json",
+      "name": "YAML to JSON",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-sorter",
+      "name": "JSON Sorter",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-escape",
+      "name": "JSON Escape",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-unescape",
+      "name": "JSON Unescape",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "json-diff",
+      "name": "JSON Diff",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "html-formatter",
+      "name": "HTML Formatter",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "html-minifier",
+      "name": "HTML Minifier",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "css-formatter",
+      "name": "CSS Formatter",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "css-minifier",
+      "name": "CSS Minifier",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "javascript-formatter",
+      "name": "JavaScript Formatter",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "sql-formatter",
+      "name": "SQL Formatter",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "markdown-to-html",
+      "name": "Markdown to HTML",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "html-to-markdown",
+      "name": "HTML to Markdown",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "regex-tester",
+      "name": "Regex Tester",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "regex-escape",
+      "name": "Regex Escape",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "cron-expression-parser",
+      "name": "Cron Expression Parser",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "unix-timestamp-converter",
+      "name": "Unix Timestamp Converter",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "epoch-generator",
+      "name": "Epoch Generator",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "csv-formatter",
+      "name": "CSV Formatter",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "csv-validator",
+      "name": "CSV Validator",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "yaml-validator",
+      "name": "YAML Validator",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "xml-validator",
+      "name": "XML Validator",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "url-parser",
+      "name": "URL Parser",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "query-string-parser",
+      "name": "Query String Parser",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "http-header-parser",
+      "name": "HTTP Header Parser",
+      "category": "Developer & Data Tools"
+    },
+    {
+      "id": "base64-encoder",
+      "name": "Base64 Encoder",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "base64-decoder",
+      "name": "Base64 Decoder",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "url-encoder",
+      "name": "URL Encoder",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "url-decoder",
+      "name": "URL Decoder",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "html-entity-encoder",
+      "name": "HTML Entity Encoder",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "html-entity-decoder",
+      "name": "HTML Entity Decoder",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "jwt-decoder",
+      "name": "JWT Decoder",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "uuid-generator",
+      "name": "UUID Generator",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "ulid-generator",
+      "name": "ULID Generator",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "md5-generator",
+      "name": "MD5 Generator",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "sha-1-generator",
+      "name": "SHA-1 Generator",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "sha-256-generator",
+      "name": "SHA-256 Generator",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "sha-512-generator",
+      "name": "SHA-512 Generator",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "random-token-generator",
+      "name": "Random Token Generator",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "hex-to-text",
+      "name": "Hex to Text",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "text-to-hex",
+      "name": "Text to Hex",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "binary-to-text",
+      "name": "Binary to Text",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "text-to-binary",
+      "name": "Text to Binary",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "ascii-to-text",
+      "name": "ASCII to Text",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "text-to-ascii",
+      "name": "Text to ASCII",
+      "category": "Encoding, Hash & ID Tools"
+    },
+    {
+      "id": "random-number-generator",
+      "name": "Random Number Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-name-picker",
+      "name": "Random Name Picker",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-wheel",
+      "name": "Random Wheel",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-team-generator",
+      "name": "Random Team Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-group-generator",
+      "name": "Random Group Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-list-picker",
+      "name": "Random List Picker",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-letter-generator",
+      "name": "Random Letter Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-word-generator",
+      "name": "Random Word Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "coin-flip",
+      "name": "Coin Flip",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "dice-roller",
+      "name": "Dice Roller",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "yes-or-no-generator",
+      "name": "Yes or No Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-date-generator",
+      "name": "Random Date Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-time-generator",
+      "name": "Random Time Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-password-generator",
+      "name": "Random Password Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-uuid-generator",
+      "name": "Random UUID Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-pair-generator",
+      "name": "Random Pair Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "tournament-pairing-generator",
+      "name": "Tournament Pairing Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "secret-santa-generator",
+      "name": "Secret Santa Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "classroom-student-picker",
+      "name": "Classroom Student Picker",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-order-generator",
+      "name": "Random Order Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "lottery-number-generator",
+      "name": "Lottery Number Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "bingo-number-generator",
+      "name": "Bingo Number Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "decision-wheel",
+      "name": "Decision Wheel",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "random-sequence-generator",
+      "name": "Random Sequence Generator",
+      "category": "Random & Picker Tools"
+    },
+    {
+      "id": "color-picker",
+      "name": "Color Picker",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "color-palette-generator",
+      "name": "Color Palette Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "palette-from-image",
+      "name": "Palette From Image",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "random-color-generator",
+      "name": "Random Color Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "gradient-generator",
+      "name": "Gradient Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "css-gradient-generator",
+      "name": "CSS Gradient Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "hex-to-rgb",
+      "name": "HEX to RGB",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "rgb-to-hex",
+      "name": "RGB to HEX",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "hex-to-hsl",
+      "name": "HEX to HSL",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "hsl-to-hex",
+      "name": "HSL to HEX",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "rgb-to-hsl",
+      "name": "RGB to HSL",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "cmyk-to-rgb",
+      "name": "CMYK to RGB",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "rgb-to-cmyk",
+      "name": "RGB to CMYK",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "color-contrast-checker",
+      "name": "Color Contrast Checker",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "wcag-contrast-calculator",
+      "name": "WCAG Contrast Calculator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "complementary-color-generator",
+      "name": "Complementary Color Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "analogous-color-generator",
+      "name": "Analogous Color Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "triadic-color-generator",
+      "name": "Triadic Color Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "color-shades-generator",
+      "name": "Color Shades Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "color-tints-generator",
+      "name": "Color Tints Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "color-mixer",
+      "name": "Color Mixer",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "brand-palette-generator",
+      "name": "Brand Palette Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "css-color-generator",
+      "name": "CSS Color Generator",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "image-average-color",
+      "name": "Image Average Color",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "color-blindness-preview",
+      "name": "Color Blindness Preview",
+      "category": "Color & Design Tools"
+    },
+    {
+      "id": "compress-image",
+      "name": "Compress Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "resize-image",
+      "name": "Resize Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "crop-image",
+      "name": "Crop Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "rotate-image",
+      "name": "Rotate Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "flip-image",
+      "name": "Flip Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "jpg-to-png",
+      "name": "JPG to PNG",
+      "category": "Image Tools"
+    },
+    {
+      "id": "png-to-jpg",
+      "name": "PNG to JPG",
+      "category": "Image Tools"
+    },
+    {
+      "id": "webp-to-jpg",
+      "name": "WebP to JPG",
+      "category": "Image Tools"
+    },
+    {
+      "id": "webp-to-png",
+      "name": "WebP to PNG",
+      "category": "Image Tools"
+    },
+    {
+      "id": "jpg-to-webp",
+      "name": "JPG to WebP",
+      "category": "Image Tools"
+    },
+    {
+      "id": "png-to-webp",
+      "name": "PNG to WebP",
+      "category": "Image Tools"
+    },
+    {
+      "id": "heic-to-jpg",
+      "name": "HEIC to JPG",
+      "category": "Image Tools"
+    },
+    {
+      "id": "svg-to-png",
+      "name": "SVG to PNG",
+      "category": "Image Tools"
+    },
+    {
+      "id": "svg-to-jpg",
+      "name": "SVG to JPG",
+      "category": "Image Tools"
+    },
+    {
+      "id": "image-to-base64",
+      "name": "Image to Base64",
+      "category": "Image Tools"
+    },
+    {
+      "id": "base64-to-image",
+      "name": "Base64 to Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "remove-exif-metadata",
+      "name": "Remove EXIF Metadata",
+      "category": "Image Tools"
+    },
+    {
+      "id": "exif-viewer",
+      "name": "EXIF Viewer",
+      "category": "Image Tools"
+    },
+    {
+      "id": "change-image-dpi",
+      "name": "Change Image DPI",
+      "category": "Image Tools"
+    },
+    {
+      "id": "image-dimensions-checker",
+      "name": "Image Dimensions Checker",
+      "category": "Image Tools"
+    },
+    {
+      "id": "image-file-size-estimator",
+      "name": "Image File Size Estimator",
+      "category": "Image Tools"
+    },
+    {
+      "id": "add-image-border",
+      "name": "Add Image Border",
+      "category": "Image Tools"
+    },
+    {
+      "id": "round-image-corners",
+      "name": "Round Image Corners",
+      "category": "Image Tools"
+    },
+    {
+      "id": "grayscale-image",
+      "name": "Grayscale Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "image-opacity-tool",
+      "name": "Image Opacity Tool",
+      "category": "Image Tools"
+    },
+    {
+      "id": "pixelate-image",
+      "name": "Pixelate Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "blur-image",
+      "name": "Blur Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "image-color-picker",
+      "name": "Image Color Picker",
+      "category": "Image Tools"
+    },
+    {
+      "id": "extract-colors-from-image",
+      "name": "Extract Colors From Image",
+      "category": "Image Tools"
+    },
+    {
+      "id": "batch-image-resizer",
+      "name": "Batch Image Resizer",
+      "category": "Image Tools"
+    },
+    {
+      "id": "profile-picture-cropper",
+      "name": "Profile Picture Cropper",
+      "category": "Image Tools"
+    },
+    {
+      "id": "youtube-thumbnail-resizer",
+      "name": "YouTube Thumbnail Resizer",
+      "category": "Image Tools"
+    },
+    {
+      "id": "instagram-image-resizer",
+      "name": "Instagram Image Resizer",
+      "category": "Image Tools"
+    },
+    {
+      "id": "instagram-story-resizer",
+      "name": "Instagram Story Resizer",
+      "category": "Image Tools"
+    },
+    {
+      "id": "opengraph-image-resizer",
+      "name": "OpenGraph Image Resizer",
+      "category": "Image Tools"
+    },
+    {
+      "id": "favicon-generator",
+      "name": "Favicon Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "image-to-favicon",
+      "name": "Image to Favicon",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "favicon-checker",
+      "name": "Favicon Checker",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "ico-to-png",
+      "name": "ICO to PNG",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "png-to-ico",
+      "name": "PNG to ICO",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "svg-optimizer",
+      "name": "SVG Optimizer",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "svg-viewer",
+      "name": "SVG Viewer",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "svg-to-data-uri",
+      "name": "SVG to Data URI",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "data-uri-to-image",
+      "name": "Data URI to Image",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "placeholder-image-generator",
+      "name": "Placeholder Image Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "web-manifest-generator",
+      "name": "Web Manifest Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "robots-txt-generator",
+      "name": "Robots.txt Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "sitemap-xml-generator",
+      "name": "Sitemap XML Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "meta-tag-generator",
+      "name": "Meta Tag Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "opengraph-tag-generator",
+      "name": "OpenGraph Tag Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "twitter-card-generator",
+      "name": "Twitter Card Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "schema-markup-generator",
+      "name": "Schema Markup Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "css-box-shadow-generator",
+      "name": "CSS Box Shadow Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "border-radius-generator",
+      "name": "Border Radius Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "css-clamp-calculator",
+      "name": "CSS Clamp Calculator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "rem-to-px",
+      "name": "REM to PX",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "px-to-rem",
+      "name": "PX to REM",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "viewport-unit-calculator",
+      "name": "Viewport Unit Calculator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "css-triangle-generator",
+      "name": "CSS Triangle Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "css-grid-generator",
+      "name": "CSS Grid Generator",
+      "category": "Web Asset Tools"
+    },
+    {
+      "id": "url-qr-generator",
+      "name": "URL QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "text-qr-generator",
+      "name": "Text QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "wi-fi-qr-generator",
+      "name": "Wi-Fi QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "email-qr-generator",
+      "name": "Email QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "phone-qr-generator",
+      "name": "Phone QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "sms-qr-generator",
+      "name": "SMS QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "whatsapp-qr-generator",
+      "name": "WhatsApp QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "vcard-qr-generator",
+      "name": "vCard QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "location-qr-generator",
+      "name": "Location QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "calendar-event-qr-generator",
+      "name": "Calendar Event QR Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "qr-color-customizer",
+      "name": "QR Color Customizer",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "qr-with-logo",
+      "name": "QR With Logo",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "qr-reader-from-image",
+      "name": "QR Reader From Image",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "barcode-generator",
+      "name": "Barcode Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "code-128-generator",
+      "name": "Code 128 Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "ean-13-generator",
+      "name": "EAN-13 Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "ean-8-generator",
+      "name": "EAN-8 Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "upc-a-generator",
+      "name": "UPC-A Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "code-39-generator",
+      "name": "Code 39 Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "isbn-barcode-generator",
+      "name": "ISBN Barcode Generator",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "barcode-reader",
+      "name": "Barcode Reader",
+      "category": "QR & Barcode Tools"
+    },
+    {
+      "id": "merge-pdf",
+      "name": "Merge PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "split-pdf",
+      "name": "Split PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "rotate-pdf",
+      "name": "Rotate PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "delete-pdf-pages",
+      "name": "Delete PDF Pages",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "extract-pdf-pages",
+      "name": "Extract PDF Pages",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "reorder-pdf-pages",
+      "name": "Reorder PDF Pages",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "images-to-pdf",
+      "name": "Images to PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "jpg-to-pdf",
+      "name": "JPG to PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "png-to-pdf",
+      "name": "PNG to PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "pdf-to-jpg",
+      "name": "PDF to JPG",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "pdf-to-png",
+      "name": "PDF to PNG",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "compress-pdf",
+      "name": "Compress PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "add-pdf-page-numbers",
+      "name": "Add PDF Page Numbers",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "add-pdf-watermark",
+      "name": "Add PDF Watermark",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "remove-pdf-metadata",
+      "name": "Remove PDF Metadata",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "pdf-metadata-viewer",
+      "name": "PDF Metadata Viewer",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "pdf-page-count",
+      "name": "PDF Page Count",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "pdf-size-analyzer",
+      "name": "PDF Size Analyzer",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "crop-pdf",
+      "name": "Crop PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "protect-pdf-with-password",
+      "name": "Protect PDF With Password",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "unlock-pdf-with-known-password",
+      "name": "Unlock PDF With Known Password",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "combine-images-and-pdf",
+      "name": "Combine Images and PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "pdf-page-size-converter",
+      "name": "PDF Page Size Converter",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "grayscale-pdf",
+      "name": "Grayscale PDF",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "pdf-text-extractor",
+      "name": "PDF Text Extractor",
+      "category": "PDF Tools"
+    },
+    {
+      "id": "mp3-to-wav",
+      "name": "MP3 to WAV",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "wav-to-mp3",
+      "name": "WAV to MP3",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "m4a-to-mp3",
+      "name": "M4A to MP3",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "ogg-to-mp3",
+      "name": "OGG to MP3",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "aac-to-mp3",
+      "name": "AAC to MP3",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "audio-trimmer",
+      "name": "Audio Trimmer",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "audio-cutter",
+      "name": "Audio Cutter",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "audio-joiner",
+      "name": "Audio Joiner",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "change-audio-volume",
+      "name": "Change Audio Volume",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "stereo-to-mono",
+      "name": "Stereo to Mono",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "extract-audio-from-video",
+      "name": "Extract Audio From Video",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "mp4-to-mp3",
+      "name": "MP4 to MP3",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "video-trimmer",
+      "name": "Video Trimmer",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "video-cropper",
+      "name": "Video Cropper",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "video-rotator",
+      "name": "Video Rotator",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "mute-video",
+      "name": "Mute Video",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "gif-to-mp4",
+      "name": "GIF to MP4",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "mp4-to-gif",
+      "name": "MP4 to GIF",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "video-speed-changer",
+      "name": "Video Speed Changer",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "audio-bitrate-converter",
+      "name": "Audio Bitrate Converter",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "video-bitrate-converter",
+      "name": "Video Bitrate Converter",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "srt-to-vtt",
+      "name": "SRT to VTT",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "vtt-to-srt",
+      "name": "VTT to SRT",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "subtitle-shift-tool",
+      "name": "Subtitle Shift Tool",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "subtitle-merger",
+      "name": "Subtitle Merger",
+      "category": "Audio, Video & Subtitle Tools"
+    },
+    {
+      "id": "stl-viewer",
+      "name": "STL Viewer",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "stl-dimensions-checker",
+      "name": "STL Dimensions Checker",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "stl-volume-calculator",
+      "name": "STL Volume Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "filament-length-calculator",
+      "name": "Filament Length Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "filament-weight-calculator",
+      "name": "Filament Weight Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "filament-cost-calculator",
+      "name": "Filament Cost Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "3d-print-cost-calculator",
+      "name": "3D Print Cost Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "print-time-cost-calculator",
+      "name": "Print Time Cost Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "resin-volume-calculator",
+      "name": "Resin Volume Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "resin-cost-calculator",
+      "name": "Resin Cost Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "layer-height-calculator",
+      "name": "Layer Height Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "steps-per-mm-calculator",
+      "name": "Steps per mm Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "flow-rate-calculator",
+      "name": "Flow Rate Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "extrusion-multiplier-calculator",
+      "name": "Extrusion Multiplier Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "e-steps-calculator",
+      "name": "E-steps Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "nozzle-flow-calculator",
+      "name": "Nozzle Flow Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "model-scale-calculator",
+      "name": "Model Scale Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "support-angle-calculator",
+      "name": "Support Angle Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "infill-material-estimator",
+      "name": "Infill Material Estimator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "filament-remaining-calculator",
+      "name": "Filament Remaining Calculator",
+      "category": "3D Printing & Maker Tools"
+    },
+    {
+      "id": "length-converter",
+      "name": "Length Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "area-converter",
+      "name": "Area Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "volume-converter",
+      "name": "Volume Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "weight-converter",
+      "name": "Weight Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "temperature-converter",
+      "name": "Temperature Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "speed-converter",
+      "name": "Speed Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "pressure-converter",
+      "name": "Pressure Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "energy-converter",
+      "name": "Energy Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "power-converter",
+      "name": "Power Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "torque-converter",
+      "name": "Torque Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "density-converter",
+      "name": "Density Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "fuel-economy-converter",
+      "name": "Fuel Economy Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "data-storage-converter",
+      "name": "Data Storage Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "data-transfer-rate-converter",
+      "name": "Data Transfer Rate Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "angle-converter",
+      "name": "Angle Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "time-converter",
+      "name": "Time Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "frequency-converter",
+      "name": "Frequency Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "force-converter",
+      "name": "Force Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "acceleration-converter",
+      "name": "Acceleration Converter",
+      "category": "Unit & Technical Converters"
+    },
+    {
+      "id": "cooking-measurement-converter",
+      "name": "Cooking Measurement Converter",
+      "category": "Unit & Technical Converters"
+    }
+  ]
+}

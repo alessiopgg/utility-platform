@@ -1,0 +1,8 @@
+---
+import ToolContent from '../../../components/ToolContent.astro';
+import { tools } from '../../../core/registry.ts';
+import type { ToolDefinition } from '../../../core/types.ts';
+export function getStaticPaths(){ return tools.filter((tool)=>tool.implemented).map((tool)=>({params:{category:tool.categorySlug,tool:tool.id},props:{tool}})); }
+const { tool } = Astro.props as { tool: ToolDefinition };
+---
+<ToolContent locale="en" tool={tool} />

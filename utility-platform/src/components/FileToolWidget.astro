@@ -1,0 +1,69 @@
+---
+import { getFileSpec } from '../engines/file-registry.ts';
+import type { EngineId, LocaleId } from '../core/types.ts';
+import { ui } from '../i18n/ui.ts';
+import { localizeLabel } from '../i18n/content.ts';
+interface Props { toolId: string; engine: EngineId; locale: LocaleId; }
+const { toolId, engine, locale } = Astro.props;
+const spec = getFileSpec(engine,toolId);
+if (!spec) throw new Error(`Missing file spec: ${engine}/${toolId}`);
+const t=ui(locale);
+---
+<div class="tool-shell" data-file-tool data-tool-id={toolId} data-engine={engine} data-locale={locale}>
+  <form data-form>
+    <div class="tool-grid">
+      {spec.fields.map((field)=><div class:list={["field", (field.type === 'textarea' || field.type === 'file') && 'full']}>
+        <label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label>
+        {field.type === 'file' ? <input id={`${toolId}-${field.key}`} name={field.key} type="file" accept={field.accept} multiple={field.multiple} required={field.required} />
+        : field.type === 'select' ? <select id={`${toolId}-${field.key}`} name={field.key}>{field.options?.map((opt)=><option value={opt.value} selected={String(field.defaultValue??'')===opt.value}>{localizeLabel(locale,opt.label)}</option>)}</select>
+        : field.type === 'textarea' ? <textarea id={`${toolId}-${field.key}`} name={field.key} rows={field.rows??8} placeholder={field.placeholder}>{field.defaultValue}</textarea>
+        : <input id={`${toolId}-${field.key}`} name={field.key} type={field.type} value={field.defaultValue} placeholder={field.placeholder} min={field.min} max={field.max} step={field.type==='number'?(field.step??'any'):undefined} inputmode={field.type==='number'?'decimal':undefined} />}
+      </div>)}
+    </div>
+    <div class="actions"><button class="btn btn-primary" type="submit">{t.calculate}</button><button class="btn btn-secondary" type="reset">{t.reset}</button></div>
+  </form>
+  <div class="error" data-error role="alert"></div>
+  <div class="results" data-results aria-live="polite"></div>
+</div>
+<script>
+  import { runFileTool } from '../engines/file-registry.ts';
+  import { parseLocaleNumber, formatNumber } from '../core/number.ts';
+  import { localizeLabel } from '../i18n/content.ts';
+  document.querySelectorAll('[data-file-tool]').forEach((root)=>{
+    if(!(root instanceof HTMLElement)||root.dataset.bound==='1') return; root.dataset.bound='1';
+    const toolId=root.dataset.toolId??'',engine=root.dataset.engine??'',locale=root.dataset.locale??'en';
+    const form=root.querySelector('[data-form]'),results=root.querySelector('[data-results]'),error=root.querySelector('[data-error]');
+    let objectUrls=[];
+    if(!(form instanceof HTMLFormElement)||!(results instanceof HTMLElement)||!(error instanceof HTMLElement))return;
+    const clearUrls=()=>{for(const url of objectUrls)URL.revokeObjectURL(url);objectUrls=[];};
+    form.addEventListener('submit',async(event)=>{
+      event.preventDefault(); clearUrls();
+      try{
+        const values={};
+        for(const el of Array.from(form.elements)){
+          if(!(el instanceof HTMLInputElement||el instanceof HTMLTextAreaElement||el instanceof HTMLSelectElement)||!el.name) continue;
+          if(el instanceof HTMLInputElement&&el.type==='file'){
+            const files=Array.from(el.files??[]); values[el.name]=el.multiple?files:(files[0]??new File([],''));
+          } else if(el instanceof HTMLInputElement&&el.type==='number') values[el.name]=parseLocaleNumber(el.value,locale);
+          else values[el.name]=el.value;
+        }
+        const output=await runFileTool(engine,toolId,values); results.innerHTML='';
+        for(const item of output){
+          const card=document.createElement('div');card.className='result-card';
+          const label=document.createElement('span');label.className='result-label';label.textContent=localizeLabel(locale as any,item.label);card.append(label);
+          if(item.kind==='file'){
+            const url=URL.createObjectURL(item.blob);objectUrls.push(url);
+            if(item.preview&&item.blob.type.startsWith('image/')){const img=document.createElement('img');img.src=url;img.alt=item.filename;img.loading='lazy';img.style.maxWidth='100%';img.style.maxHeight='360px';img.style.objectFit='contain';img.style.marginBlock='.75rem';card.append(img);}
+            const a=document.createElement('a');a.className='btn btn-primary';a.href=url;a.download=item.filename;a.textContent=`Download ${item.filename}`;card.append(a);
+          } else {
+            if(item.color) card.style.borderInlineStart=`6px solid ${item.color}`;
+            const value=item.multiline?document.createElement('pre'):document.createElement('strong');value.className='result-value';value.textContent=typeof item.value==='number'?`${formatNumber(item.value,locale)}${item.unit?` ${item.unit}`:''}`:`${item.value}${item.unit?` ${item.unit}`:''}`;if(item.multiline){value.style.whiteSpace='pre-wrap';value.style.fontFamily='ui-monospace, SFMono-Regular, Menlo, monospace';value.style.fontSize='.95rem';}card.append(value);
+          }
+          results.append(card);
+        }
+        error.classList.remove('visible');results.classList.add('visible');
+      }catch(cause){results.classList.remove('visible');error.textContent=cause instanceof Error?cause.message:'Tool error';error.classList.add('visible');}
+    });
+    form.addEventListener('reset',()=>queueMicrotask(()=>{clearUrls();results.innerHTML='';results.classList.remove('visible');error.classList.remove('visible')}));
+  });
+</script>

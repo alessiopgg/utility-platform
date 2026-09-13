@@ -1,0 +1,8 @@
+---
+import HomeContent from '../../components/HomeContent.astro';
+import { locales } from '../../i18n/config.ts';
+import type { LocaleId } from '../../core/types.ts';
+export function getStaticPaths(){ return locales.filter((locale)=>locale!=='en').map((locale)=>({params:{locale},props:{locale}})); }
+const { locale } = Astro.props as { locale: LocaleId };
+---
+<HomeContent locale={locale} />

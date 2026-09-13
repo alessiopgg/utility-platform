@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CalculatorWidget from './CalculatorWidget.astro';
+import SimpleToolWidget from './SimpleToolWidget.astro';
+import FileToolWidget from './FileToolWidget.astro';
+import { isFileTool } from '../engines/file-registry.ts';
+import AdSlot from './AdSlot.astro';
+import { relatedTools } from '../core/registry.ts';
+import { categoryPath, homePath, toolPath } from '../core/routes.ts';
+import { locales } from '../i18n/config.ts';
+import { toolSeo } from '../core/seo.ts';
+import type { LocaleId, ToolDefinition } from '../core/types.ts';
+import { ui } from '../i18n/ui.ts';
+import { categoryName, howItWorks, toolName } from '../i18n/content.ts';
+interface Props { locale: LocaleId; tool: ToolDefinition; }
+const { locale, tool } = Astro.props;
+const t = ui(locale);
+const seo = toolSeo(locale,tool);
+const localePaths = Object.fromEntries(locales.map((id)=>[id,toolPath(id,tool)]));
+const related = relatedTools(tool).filter((item)=>item.implemented);
+const fileTool = isFileTool(tool.engine,tool.id);
+const displayName = toolName(locale,tool);
+const displayCategory = categoryName(locale,tool.category);
+const how = howItWorks(locale);
+const jsonLd = { '@context':'https://schema.org', '@type':'WebApplication', name:displayName, applicationCategory:'UtilitiesApplication', operatingSystem:'Any', isAccessibleForFree:true };
+---
+<BaseLayout locale={locale} title={seo.title} description={seo.description} canonicalPath={seo.canonicalPath} localePaths={localePaths} noindex={!tool.implemented}>
+  <div class="container">
+    <nav class="breadcrumb"><a href={homePath(locale)}>{t.home}</a><span>›</span><a href={categoryPath(locale,tool.categorySlug)}>{displayCategory}</a><span>›</span><span>{displayName}</span></nav>
+    <section class="tool-header">
+      <h1>{displayName}</h1>
+      <p>{seo.description}</p>
+      {tool.localOnly && <span class="privacy-badge">✓ {t.privacyLocal} · {t.localDetail}</span>}
+    </section>
+    {tool.engine === 'calculator' && tool.implemented ? <CalculatorWidget toolId={tool.id} locale={locale} /> : fileTool && tool.implemented ? <FileToolWidget toolId={tool.id} engine={tool.engine} locale={locale} /> : tool.implemented ? <SimpleToolWidget toolId={tool.id} engine={tool.engine} locale={locale} /> : <div class="tool-shell"><div class="engine-status"><strong>{t.unavailable}</strong><p>{t.unavailableDetail}</p></div></div>}
+    <AdSlot label={t.ad} />
+    <section>
+      <h2>{how.title}</h2>
+      <p>{how.body}</p>
+    </section>
+    {related.length > 0 && <section><h2 class="section-title">{t.related}</h2><div class="tools-list">{related.map((item)=><a class="tool-link" href={toolPath(locale,item)}>{toolName(locale,item)}</a>)}</div></section>}
+    <AdSlot label={t.ad} />
+  </div>
+  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+</BaseLayout>

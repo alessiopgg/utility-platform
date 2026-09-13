@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "toolCount": 429,
+  "localeCount": 14,
+  "projectedLocalizedToolPages": 6006,
+  "categoryCount": 16,
+  "categories": {
+    "Calculators — Math & Everyday": 30,
+    "Calculators — Business & Finance": 30,
+    "Calculators — Construction & DIY": 40,
+    "Calculators — Photography & Creator": 24,
+    "Text Tools": 30,
+    "Developer & Data Tools": 35,
+    "Encoding, Hash & ID Tools": 20,
+    "Random & Picker Tools": 24,
+    "Color & Design Tools": 25,
+    "Image Tools": 35,
+    "Web Asset Tools": 25,
+    "QR & Barcode Tools": 21,
+    "PDF Tools": 25,
+    "Audio, Video & Subtitle Tools": 25,
+    "3D Printing & Maker Tools": 20,
+    "Unit & Technical Converters": 20
+  },
+  "valid": true,
+  "failures": []
+}

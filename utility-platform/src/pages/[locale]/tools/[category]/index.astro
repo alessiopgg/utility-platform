@@ -1,0 +1,9 @@
+---
+import CategoryContent from '../../../../components/CategoryContent.astro';
+import { categories, tools } from '../../../../core/registry.ts';
+import { locales } from '../../../../i18n/config.ts';
+import type { LocaleId } from '../../../../core/types.ts';
+export function getStaticPaths(){ return locales.filter((locale)=>locale!=='en').flatMap((locale)=>categories.filter((category)=>tools.some((tool)=>tool.categorySlug===category.slug&&tool.implemented)).map((category)=>({params:{locale,category:category.slug},props:{locale,categorySlug:category.slug}}))); }
+const { locale, categorySlug } = Astro.props as { locale: LocaleId; categorySlug: string };
+---
+<CategoryContent locale={locale} categorySlug={categorySlug} />

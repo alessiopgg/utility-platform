@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { categories, tools } from '../core/registry.ts';
+import { categoryPath, toolPath, homePath } from '../core/routes.ts';
+import { locales } from '../i18n/config.ts';
+import type { LocaleId } from '../core/types.ts';
+import { ui } from '../i18n/ui.ts';
+import { categoryName, homeIntro, toolName, toolsCount } from '../i18n/content.ts';
+import { SITE_NAME } from '../core/site.ts';
+interface Props { locale: LocaleId; }
+const { locale } = Astro.props;
+const t = ui(locale);
+const activeTools = tools.filter((tool)=>tool.implemented);
+const activeCategories = categories.filter((category)=>activeTools.some((tool)=>tool.categorySlug===category.slug));
+const localePaths = Object.fromEntries(locales.map((id)=>[id,homePath(id)]));
+---
+<BaseLayout locale={locale} title={`${SITE_NAME} — Browser utilities`} description={t.tagline} canonicalPath={homePath(locale)} localePaths={localePaths}>
+  <div class="container">
+    <section class="hero">
+      <h1>{t.tagline}</h1>
+      <p>{homeIntro(locale,activeTools.length)}</p>
+      <div class="search-box"><input type="search" placeholder={t.searchPlaceholder} aria-label={t.search} data-tool-search /></div>
+    </section>
+    <section id="categories">
+      <h2>{t.categories}</h2>
+      <div class="grid">
+        {activeCategories.map((category)=><a class="card category-card" href={categoryPath(locale,category.slug)} data-search-item data-search-text={`${categoryName(locale,category.name)} ${category.name} ${category.slug}`}><h3>{categoryName(locale,category.name)}</h3><p>{toolsCount(locale,category.count)}</p><span class="count">{toolsCount(locale,activeTools.filter((tool)=>tool.categorySlug===category.slug).length)} →</span></a>)}
+      </div>
+    </section>
+    <section>
+      <h2 class="section-title">{t.allTools}</h2>
+      <div class="tools-list" data-tool-list>
+        {activeTools.map((tool)=><a class="tool-link" href={toolPath(locale,tool)} data-search-item data-search-text={`${toolName(locale,tool)} ${tool.name} ${categoryName(locale,tool.category)}`}>{toolName(locale,tool)}</a>)}
+      </div>
+    </section>
+  </div>
+</BaseLayout>
+<script>
+  const search = document.querySelector('[data-tool-search]');
+  search?.addEventListener('input',(event)=>{
+    const q = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value.toLowerCase().trim() : '';
+    document.querySelectorAll('[data-search-item]').forEach((item)=>{
+      if (!(item instanceof HTMLElement)) return;
+      item.hidden = q.length > 0 && !(item.dataset.searchText ?? '').toLowerCase().includes(q);
+    });
+  });
+</script>

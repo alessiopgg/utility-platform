@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { categories, tools } from '../core/registry.ts';
+import { categoryPath, homePath, toolPath } from '../core/routes.ts';
+import { locales } from '../i18n/config.ts';
+import type { LocaleId } from '../core/types.ts';
+import { ui } from '../i18n/ui.ts';
+import { categoryDescription, categoryName, toolName } from '../i18n/content.ts';
+interface Props { locale: LocaleId; categorySlug: string; }
+const { locale, categorySlug } = Astro.props;
+const category = categories.find((item)=>item.slug===categorySlug);
+if (!category) throw new Error(`Unknown category ${categorySlug}`);
+const activeTools = tools.filter((tool)=>tool.categorySlug===categorySlug && tool.implemented);
+const localePaths = Object.fromEntries(locales.map((id)=>[id,categoryPath(id,categorySlug)]));
+const t = ui(locale);
+const displayCategory = categoryName(locale,category.name);
+const description = categoryDescription(locale,category.name,activeTools.length);
+---
+<BaseLayout locale={locale} title={`${displayCategory} — ${t.siteName}`} description={description} canonicalPath={categoryPath(locale,categorySlug)} localePaths={localePaths}>
+  <div class="container">
+    <nav class="breadcrumb"><a href={homePath(locale)}>{t.home}</a><span>›</span><span>{displayCategory}</span></nav>
+    <section class="tool-header"><h1>{displayCategory}</h1><p>{description}</p></section>
+    <div class="tools-list" style="margin-top:24px">
+      {activeTools.map((tool)=><a class="tool-link" href={toolPath(locale,tool)}>{toolName(locale,tool)}</a>)}
+    </div>
+  </div>
+</BaseLayout>

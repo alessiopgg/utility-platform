@@ -1,0 +1,21 @@
+---
+import LocaleSwitcher from './LocaleSwitcher.astro';
+import { homePath } from '../core/routes.ts';
+import { locales } from '../i18n/config.ts';
+import type { LocaleId } from '../core/types.ts';
+import { ui } from '../i18n/ui.ts';
+import { SITE_NAME } from '../core/site.ts';
+interface Props { locale: LocaleId; localePaths?: Partial<Record<LocaleId,string>>; }
+const { locale, localePaths } = Astro.props;
+const t = ui(locale);
+const paths = localePaths ?? Object.fromEntries(locales.map((l)=>[l,homePath(l)]));
+---
+<header class="site-header">
+  <div class="container header-row">
+    <a class="brand" href={homePath(locale)}>{SITE_NAME}</a>
+    <div class="header-actions">
+      <a href={`${homePath(locale)}#categories`}>{t.categories}</a>
+      <LocaleSwitcher locale={locale} paths={paths} label={t.language} />
+    </div>
+  </div>
+</header>

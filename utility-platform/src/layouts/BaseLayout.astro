@@ -1,0 +1,54 @@
+---
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import { localeMeta, locales } from '../i18n/config.ts';
+import { homePath } from '../core/routes.ts';
+import { ADSENSE_CLIENT, PLAUSIBLE_DOMAIN, SITE_NAME } from '../core/site.ts';
+import type { LocaleId } from '../core/types.ts';
+interface Props {
+  locale: LocaleId;
+  title: string;
+  description: string;
+  canonicalPath: string;
+  localePaths?: Partial<Record<LocaleId,string>>;
+  noindex?: boolean;
+}
+const { locale, title, description, canonicalPath, localePaths, noindex=false } = Astro.props;
+const meta = localeMeta[locale];
+const site = Astro.site ?? new URL('https://example.com');
+const canonical = new URL(canonicalPath, site);
+const paths = localePaths ?? Object.fromEntries(locales.map((id)=>[id,homePath(id)]));
+---
+<!doctype html>
+<html lang={meta.htmlLang} dir={meta.dir}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex,follow" />}
+    <link rel="canonical" href={canonical} />
+    {locales.map((id)=><link rel="alternate" hreflang={id} href={new URL(paths[id] ?? '/', site)} />)}
+    <link rel="alternate" hreflang="x-default" href={new URL(paths.en ?? '/', site)} />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#111827" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    {ADSENSE_CLIENT && <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`} crossorigin="anonymous"></script>}
+    {PLAUSIBLE_DOMAIN && <script defer data-domain={PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js"></script>}
+    <title>{title}</title>
+  </head>
+  <body>
+    <Header locale={locale} localePaths={paths} />
+    <main><slot /></main>
+    <footer><div class="container">© {new Date().getFullYear()} {SITE_NAME} · Privacy-first browser utilities.</div></footer>
+    {PLAUSIBLE_DOMAIN && <script is:inline>
+      window.addEventListener('utility:analytics', (event) => {
+        const detail = event instanceof CustomEvent ? event.detail : null;
+        if (!detail?.event || typeof window.plausible !== 'function') return;
+        window.plausible(detail.event, { props: detail.metadata || {} });
+      });
+    </script>}
+  </body>
+</html>
