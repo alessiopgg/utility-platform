@@ -6,6 +6,7 @@ import { locales } from '../i18n/config.ts';
 import type { LocaleId } from '../core/types.ts';
 import { ui } from '../i18n/ui.ts';
 import { categoryDescription, categoryName, toolName } from '../i18n/content.ts';
+import { toolSeo } from '../core/seo.ts';
 interface Props { locale: LocaleId; categorySlug: string; }
 const { locale, categorySlug } = Astro.props;
 const category = categories.find((item)=>item.slug===categorySlug);
@@ -18,10 +19,57 @@ const description = categoryDescription(locale,category.name,activeTools.length)
 ---
 <BaseLayout locale={locale} title={`${displayCategory} — ${t.siteName}`} description={description} canonicalPath={categoryPath(locale,categorySlug)} localePaths={localePaths}>
   <div class="container">
-    <nav class="breadcrumb"><a href={homePath(locale)}>{t.home}</a><span>›</span><span>{displayCategory}</span></nav>
-    <section class="tool-header"><h1>{displayCategory}</h1><p>{description}</p></section>
-    <div class="tools-list" style="margin-top:24px">
-      {activeTools.map((tool)=><a class="tool-link" href={toolPath(locale,tool)}>{toolName(locale,tool)}</a>)}
+    <nav class="breadcrumb">
+      <a href={homePath(locale)}>{t.home}</a>
+      <span>›</span>
+      <span>{displayCategory}</span>
+    </nav>
+
+    <section class="tool-header">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>{activeTools.length} {t.tools}</div>
+      <h1>{displayCategory}</h1>
+      <p>{description}</p>
+    </section>
+
+    <div class="category-page-search">
+      <div class="search-box">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.4-3.4"></path>
+        </svg>
+        <input type="search" placeholder={t.searchPlaceholder} aria-label={t.search} data-category-search autocomplete="off" />
+      </div>
+    </div>
+
+    <div class="tools-list" data-category-tool-list>
+      {activeTools.map((tool) => {
+        const seo = toolSeo(locale,tool);
+        return (
+          <a
+            class="tool-card"
+            href={toolPath(locale,tool)}
+            data-category-tool
+            data-search-text={`${toolName(locale,tool)} ${tool.name} ${seo.description}`}
+          >
+            <div class="tool-card-top">
+              <h2>{toolName(locale,tool)}</h2>
+              <span class="tool-card-arrow" aria-hidden="true">↗</span>
+            </div>
+            <p>{seo.description}</p>
+          </a>
+        );
+      })}
     </div>
   </div>
 </BaseLayout>
+
+<script>
+  const search = document.querySelector('[data-category-search]');
+  search?.addEventListener('input',(event)=>{
+    const q = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value.toLowerCase().trim() : '';
+    document.querySelectorAll('[data-category-tool]').forEach((item)=>{
+      if (!(item instanceof HTMLElement)) return;
+      item.hidden = q.length > 0 && !(item.dataset.searchText ?? '').toLowerCase().includes(q);
+    });
+  });
+</script>

@@ -5,43 +5,206 @@ import { categoryPath, toolPath, homePath } from '../core/routes.ts';
 import { locales } from '../i18n/config.ts';
 import type { LocaleId } from '../core/types.ts';
 import { ui } from '../i18n/ui.ts';
-import { categoryName, homeIntro, toolName, toolsCount } from '../i18n/content.ts';
+import { categoryDescription, categoryName, homeIntro, toolName, toolsCount } from '../i18n/content.ts';
 import { SITE_NAME } from '../core/site.ts';
+
 interface Props { locale: LocaleId; }
 const { locale } = Astro.props;
 const t = ui(locale);
 const activeTools = tools.filter((tool)=>tool.implemented);
 const activeCategories = categories.filter((category)=>activeTools.some((tool)=>tool.categorySlug===category.slug));
 const localePaths = Object.fromEntries(locales.map((id)=>[id,homePath(id)]));
+
+const privacyCopy: Record<LocaleId,{ label:string; detail:string }> = {
+  en: { label:'Privacy-first', detail:'Supported tools process your data locally in the browser.' },
+  es: { label:'Privacidad primero', detail:'Las herramientas compatibles procesan tus datos localmente en el navegador.' },
+  'pt-BR': { label:'Privacidade em primeiro lugar', detail:'As ferramentas compatíveis processam seus dados localmente no navegador.' },
+  de: { label:'Datenschutz zuerst', detail:'Unterstützte Tools verarbeiten deine Daten lokal im Browser.' },
+  fr: { label:'Priorité à la confidentialité', detail:'Les outils compatibles traitent vos données localement dans le navigateur.' },
+  it: { label:'Privacy al primo posto', detail:'Gli strumenti compatibili elaborano i dati localmente nel browser.' },
+  ja: { label:'プライバシー重視', detail:'対応ツールはデータをブラウザ内でローカル処理します。' },
+  ar: { label:'الخصوصية أولاً', detail:'تعالج الأدوات المدعومة بياناتك محليًا داخل المتصفح.' },
+  id: { label:'Privasi diutamakan', detail:'Alat yang didukung memproses data secara lokal di browser.' },
+  tr: { label:'Önce gizlilik', detail:'Desteklenen araçlar verilerinizi tarayıcıda yerel olarak işler.' },
+  pl: { label:'Prywatność przede wszystkim', detail:'Obsługiwane narzędzia przetwarzają dane lokalnie w przeglądarce.' },
+  ko: { label:'개인정보 보호 우선', detail:'지원되는 도구는 데이터를 브라우저에서 로컬로 처리합니다.' },
+  nl: { label:'Privacy voorop', detail:'Ondersteunde tools verwerken je gegevens lokaal in de browser.' },
+  vi: { label:'Ưu tiên quyền riêng tư', detail:'Các công cụ được hỗ trợ xử lý dữ liệu cục bộ trong trình duyệt.' },
+};
+
+const categoryIcons: Record<string,string> = {
+  math: '<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 7h8M8 11h2m4 0h2M8 15h2m4 0h2M8 19h2m4 0h2"/>',
+  business: '<path d="M9 7V5h6v2"/><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M3 12h18M9 12v2h6v-2"/>',
+  construction: '<path d="m14 5 5 5"/><path d="M13 6 6 13l5 5 7-7"/><path d="m4 20 5-5"/>',
+  'creator-calculators': '<path d="M4 8h4l2-2h4l2 2h4v11H4z"/><circle cx="12" cy="13" r="3"/>',
+  text: '<path d="M5 6h14M5 10h14M5 14h9M5 18h11"/>',
+  developer: '<path d="m8 8-4 4 4 4m8-8 4 4-4 4m-5 3 2-14"/>',
+  encoding: '<path d="M10 3 8 21m8-18-2 18M4 9h16M3 15h16"/>',
+  random: '<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r=".8" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r=".8" fill="currentColor" stroke="none"/><circle cx="12" cy="12" r=".8" fill="currentColor" stroke="none"/><circle cx="9" cy="15" r=".8" fill="currentColor" stroke="none"/><circle cx="15" cy="15" r=".8" fill="currentColor" stroke="none"/>',
+  color: '<path d="M12 3a9 9 0 1 0 0 18h1.5a1.8 1.8 0 0 0 0-3.6H12a1.7 1.7 0 0 1 0-3.4h2.2A6.8 6.8 0 0 0 21 7.2 4.2 4.2 0 0 0 16.8 3z"/><circle cx="7.5" cy="10" r=".8" fill="currentColor" stroke="none"/><circle cx="10" cy="6.8" r=".8" fill="currentColor" stroke="none"/><circle cx="14.2" cy="6.5" r=".8" fill="currentColor" stroke="none"/>',
+  image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="m5 18 5-5 3 3 2-2 4 4"/>',
+  web: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>',
+  'qr-barcode': '<path d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2m2 0h2m-6 3h6m-6 3h2m2 0h2"/>',
+  pdf: '<path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M8.5 15h7M8.5 18h5"/>',
+  media: '<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/>',
+  maker: '<path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/>',
+  units: '<path d="M4 17 17 4l3 3L7 20z"/><path d="m12 9 3 3m-6 0 3 3m3-9 3 3"/>',
+};
 ---
 <BaseLayout locale={locale} title={`${SITE_NAME} — Browser utilities`} description={t.tagline} canonicalPath={homePath(locale)} localePaths={localePaths}>
   <div class="container">
-    <section class="hero">
+    <section class="hero hero-home">
+      <div class="eyebrow"><span class="eyebrow-dot"></span>{activeTools.length} {t.tools}</div>
       <h1>{t.tagline}</h1>
       <p>{homeIntro(locale,activeTools.length)}</p>
-      <div class="search-box"><input type="search" placeholder={t.searchPlaceholder} aria-label={t.search} data-tool-search /></div>
+
+      <div class="search-box" id="tool-search">
+        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"></circle>
+          <path d="m20 20-3.4-3.4"></path>
+        </svg>
+        <input
+          type="search"
+          placeholder={t.searchPlaceholder}
+          aria-label={t.search}
+          data-tool-search
+          autocomplete="off"
+          aria-autocomplete="list"
+          aria-controls="tool-search-results"
+        />
+        <kbd class="search-shortcut" aria-hidden="true">/</kbd>
+
+        <div class="search-suggestions" id="tool-search-results" data-search-suggestions hidden>
+          {activeTools.map((tool)=>
+            <a
+              class="search-suggestion"
+              href={toolPath(locale,tool)}
+              data-search-suggestion
+              data-search-text={`${toolName(locale,tool)} ${tool.name} ${categoryName(locale,tool.category)} ${tool.category}`}
+              hidden
+            >
+              <span class="search-suggestion-main">
+                <span class="search-suggestion-name">{toolName(locale,tool)}</span>
+                <span class="search-suggestion-category">{categoryName(locale,tool.category)}</span>
+              </span>
+              <span class="search-suggestion-arrow" aria-hidden="true">↗</span>
+            </a>
+          )}
+        </div>
+      </div>
+
+      <div class="hero-trust">
+        <strong>✓ {privacyCopy[locale].label}</strong>
+        <span>{privacyCopy[locale].detail}</span>
+      </div>
     </section>
-    <section id="categories">
-      <h2>{t.categories}</h2>
+
+    <section id="categories" class="section-block">
+      <div class="section-heading">
+        <h2>{t.categories}</h2>
+        <span class="section-count">{activeCategories.length}</span>
+      </div>
+
       <div class="grid">
-        {activeCategories.map((category)=><a class="card category-card" href={categoryPath(locale,category.slug)} data-search-item data-search-text={`${categoryName(locale,category.name)} ${category.name} ${category.slug}`}><h3>{categoryName(locale,category.name)}</h3><p>{toolsCount(locale,category.count)}</p><span class="count">{toolsCount(locale,activeTools.filter((tool)=>tool.categorySlug===category.slug).length)} →</span></a>)}
+        {activeCategories.map((category) => {
+          const count = activeTools.filter((tool)=>tool.categorySlug===category.slug).length;
+          const name = categoryName(locale,category.name);
+          const description = categoryDescription(locale,category.name,count);
+          return (
+            <a class="card category-card" href={categoryPath(locale,category.slug)}>
+              <span class="category-mark" aria-hidden="true">
+                <svg viewBox="0 0 24 24" set:html={categoryIcons[category.slug] ?? categoryIcons.web}></svg>
+              </span>
+              <h3>{name}</h3>
+              <p>{description}</p>
+              <span class="category-meta">
+                <span>{toolsCount(locale,count)}</span>
+                <span class="category-arrow" aria-hidden="true">→</span>
+              </span>
+            </a>
+          );
+        })}
       </div>
     </section>
-    <section>
-      <h2 class="section-title">{t.allTools}</h2>
-      <div class="tools-list" data-tool-list>
-        {activeTools.map((tool)=><a class="tool-link" href={toolPath(locale,tool)} data-search-item data-search-text={`${toolName(locale,tool)} ${tool.name} ${categoryName(locale,tool.category)}`}>{toolName(locale,tool)}</a>)}
-      </div>
+
+    <section class="section-block">
+      <details class="directory" data-directory>
+        <summary>
+          <span>{t.allTools}</span>
+          <span class="section-count">{activeTools.length}</span>
+        </summary>
+        <div class="directory-body">
+          <div class="tools-list" data-tool-list style="margin-top:18px">
+            {activeTools.map((tool)=>
+              <a class="tool-link" href={toolPath(locale,tool)}>{toolName(locale,tool)}</a>
+            )}
+          </div>
+        </div>
+      </details>
     </section>
   </div>
 </BaseLayout>
+
 <script>
   const search = document.querySelector('[data-tool-search]');
+  const suggestions = document.querySelector('[data-search-suggestions]');
+  const suggestionItems = Array.from(document.querySelectorAll('[data-search-suggestion]'));
+  const maxSuggestions = 8;
+
+  const normalize = (value) => value.toLowerCase().trim();
+
+  const closeSuggestions = () => {
+    if (suggestions instanceof HTMLElement) suggestions.hidden = true;
+    for (const item of suggestionItems) {
+      if (item instanceof HTMLElement) item.hidden = true;
+    }
+  };
+
+  const updateSuggestions = (value) => {
+    const q = normalize(value);
+    if (!q) {
+      closeSuggestions();
+      return;
+    }
+
+    let shown = 0;
+    for (const item of suggestionItems) {
+      if (!(item instanceof HTMLElement)) continue;
+      const matches = normalize(item.dataset.searchText ?? '').includes(q);
+      const visible = matches && shown < maxSuggestions;
+      item.hidden = !visible;
+      if (visible) shown += 1;
+    }
+
+    if (suggestions instanceof HTMLElement) suggestions.hidden = shown === 0;
+  };
+
   search?.addEventListener('input',(event)=>{
-    const q = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value.toLowerCase().trim() : '';
-    document.querySelectorAll('[data-search-item]').forEach((item)=>{
-      if (!(item instanceof HTMLElement)) return;
-      item.hidden = q.length > 0 && !(item.dataset.searchText ?? '').toLowerCase().includes(q);
-    });
+    if (event.currentTarget instanceof HTMLInputElement) updateSuggestions(event.currentTarget.value);
+  });
+
+  search?.addEventListener('focus',(event)=>{
+    if (event.currentTarget instanceof HTMLInputElement) updateSuggestions(event.currentTarget.value);
+  });
+
+  document.addEventListener('click',(event)=>{
+    const target = event.target;
+    if (!(target instanceof Node)) return;
+    if (search?.contains(target) || suggestions?.contains(target)) return;
+    closeSuggestions();
+  });
+
+  window.addEventListener('keydown',(event)=>{
+    if (event.key === 'Escape') {
+      closeSuggestions();
+      return;
+    }
+    if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return;
+    const active = document.activeElement;
+    if (active instanceof HTMLInputElement || active instanceof HTMLTextAreaElement || active instanceof HTMLSelectElement) return;
+    if (search instanceof HTMLInputElement) {
+      event.preventDefault();
+      search.focus();
+    }
   });
 </script>
