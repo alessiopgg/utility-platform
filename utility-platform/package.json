@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "npm run prepare:vendor && npm run qa && astro build",
+    "build": "npm run prepare:vendor && npm run qa && astro build && node scripts/generate-sitemap.mjs",
     "preview": "astro preview",
     "qa": "npm run qa:catalog && npm run qa:implementation && npm run qa:release && npm run typecheck:core && npm run test:core",
     "qa:catalog": "node scripts/catalog-audit.mjs",
