@@ -14,7 +14,7 @@ const t=ui(locale);
     <div class="tool-grid">
       {spec.fields.map((field)=><div class:list={["field", (field.type === 'textarea' || field.type === 'file') && 'full']}>
         <label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label>
-        {field.type === 'file' ? <input id={`${toolId}-${field.key}`} name={field.key} type="file" accept={field.accept} multiple={field.multiple} required={field.required} />
+        {field.type === 'file' ? <input id={`${toolId}-${field.key}`} name={field.key} type="file" accept={field.accept} multiple={field.multiple ? true : undefined} required={field.required ? true : undefined} />
         : field.type === 'select' ? <select id={`${toolId}-${field.key}`} name={field.key}>{field.options?.map((opt)=><option value={opt.value} selected={String(field.defaultValue??'')===opt.value}>{localizeLabel(locale,opt.label)}</option>)}</select>
         : field.type === 'textarea' ? <textarea id={`${toolId}-${field.key}`} name={field.key} rows={field.rows??8} placeholder={field.placeholder}>{field.defaultValue}</textarea>
         : <input id={`${toolId}-${field.key}`} name={field.key} type={field.type} value={field.defaultValue} placeholder={field.placeholder} min={field.min} max={field.max} step={field.type==='number'?(field.step??'any'):undefined} inputmode={field.type==='number'?'decimal':undefined} />}
@@ -43,7 +43,7 @@ const t=ui(locale);
         for(const el of Array.from(form.elements)){
           if(!(el instanceof HTMLInputElement||el instanceof HTMLTextAreaElement||el instanceof HTMLSelectElement)||!el.name) continue;
           if(el instanceof HTMLInputElement&&el.type==='file'){
-            const files=Array.from(el.files??[]); values[el.name]=el.multiple?files:(files[0]??new File([],''));
+            const files=Array.from(el.files??[]); values[el.name]=files.length>1?files:(files[0]??new File([],''));
           } else if(el instanceof HTMLInputElement&&el.type==='number') values[el.name]=parseLocaleNumber(el.value,locale);
           else values[el.name]=el.value;
         }
