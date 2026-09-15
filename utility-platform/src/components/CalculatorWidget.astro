@@ -9,88 +9,34 @@ const spec = getCalculatorSpec(toolId);
 if (!spec) throw new Error(`Missing calculator spec: ${toolId}`);
 const t = ui(locale);
 ---
-<div class="tool-shell" data-calculator data-tool-id={toolId} data-locale={locale}>
-  <form data-form>
-    <div class="tool-grid">
-      {spec.fields.map((field) => (
-        <div class:list={["field", field.type === 'text' && 'full']}>
-          <label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label>
-          {field.type === 'select' ? (
-            <select id={`${toolId}-${field.key}`} name={field.key}>
-              {field.options?.map((opt)=><option value={opt.value} selected={String(field.defaultValue ?? '')===opt.value}>{localizeLabel(locale,opt.label)}</option>)}
-            </select>
-          ) : (
-            <input
-              id={`${toolId}-${field.key}`}
-              name={field.key}
-              type={field.type}
-              value={field.defaultValue}
-              placeholder={field.placeholder}
-              min={field.min}
-              max={field.max}
-              step={field.type === 'number' ? (field.step ?? 'any') : undefined}
-              inputmode={field.type === 'number' ? 'decimal' : undefined}
-            />
-          )}
-        </div>
-      ))}
-    </div>
-    <div class="actions">
-      <button class="btn btn-primary" type="submit">{t.calculate}</button>
-      <button class="btn btn-secondary" type="reset">{t.reset}</button>
-    </div>
-  </form>
-  <div class="error" data-error role="alert"></div>
-  <div class="results" data-results aria-live="polite"></div>
+<div class="tool-shell calculator-shell" data-calculator data-tool-id={toolId} data-locale={locale} data-copy={t.copy} data-copied={t.copied}>
+  <div class="calculator-layout">
+    <form data-form class="calculator-form">
+      <div class="tool-grid calculator-fields">
+        {spec.fields.map((field) => <div class:list={["field", field.type === 'text' && 'full']}><label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label>{field.type === 'select' ? <select id={`${toolId}-${field.key}`} name={field.key}>{field.options?.map((opt)=><option value={opt.value} selected={String(field.defaultValue ?? '')===opt.value}>{localizeLabel(locale,opt.label)}</option>)}</select> : <input id={`${toolId}-${field.key}`} name={field.key} type={field.type} value={field.defaultValue} placeholder={field.placeholder} min={field.min} max={field.max} step={field.type === 'number' ? (field.step ?? 'any') : undefined} inputmode={field.type === 'number' ? 'decimal' : undefined} />}</div>)}
+      </div>
+      <div class="actions action-bar"><button class="btn btn-primary" type="submit">{t.calculate}</button><button class="btn btn-text" type="reset">{t.reset}</button></div>
+      <div class="error" data-error role="alert"></div>
+    </form>
+    <section class="results-section calculator-results" data-results-section aria-live="polite">
+      <div class="results-section-head"><span>{t.result}</span></div>
+      <div class="result-placeholder" data-result-placeholder>—</div>
+      <div class="results" data-results hidden></div>
+    </section>
+  </div>
 </div>
 <script>
   import { runCalculator } from '../engines/calculator/runtime.ts';
   import { parseLocaleNumber, formatNumber } from '../core/number.ts';
   import { localizeLabel } from '../i18n/content.ts';
-
   document.querySelectorAll('[data-calculator]').forEach((root) => {
-    if (!(root instanceof HTMLElement) || root.dataset.bound === '1') return;
-    root.dataset.bound = '1';
-    const toolId = root.dataset.toolId ?? '';
-    const locale = root.dataset.locale ?? 'en';
-    const form = root.querySelector('[data-form]');
-    const results = root.querySelector('[data-results]');
-    const error = root.querySelector('[data-error]');
-    if (!(form instanceof HTMLFormElement) || !(results instanceof HTMLElement) || !(error instanceof HTMLElement)) return;
-
-    const execute = () => {
-      try {
-        const data = new FormData(form);
-        const values = {};
-        for (const [key, raw] of data.entries()) {
-          const input = form.elements.namedItem(key);
-          values[key] = input instanceof HTMLInputElement && input.type === 'number'
-            ? parseLocaleNumber(String(raw), locale)
-            : String(raw);
-        }
-        const output = runCalculator(toolId, values);
-        results.innerHTML = '';
-        for (const item of output) {
-          const card = document.createElement('div');
-          card.className = 'result-card';
-          const label = document.createElement('span'); label.className='result-label'; label.textContent=localizeLabel(locale as any,item.label);
-          const value = document.createElement('strong'); value.className='result-value';
-          value.textContent = typeof item.value === 'number'
-            ? `${formatNumber(item.value, locale, item.maximumFractionDigits ?? 6)}${item.unit ? ` ${item.unit}` : ''}`
-            : `${item.value}${item.unit ? ` ${item.unit}` : ''}`;
-          card.append(label,value); results.append(card);
-        }
-        error.classList.remove('visible');
-        results.classList.add('visible');
-        window.dispatchEvent(new CustomEvent('utility:analytics',{detail:{event:'tool_completed',metadata:{toolId}}}));
-      } catch (cause) {
-        results.classList.remove('visible');
-        error.textContent = cause instanceof Error ? cause.message : 'Calculation error';
-        error.classList.add('visible');
-        window.dispatchEvent(new CustomEvent('utility:analytics',{detail:{event:'tool_error_code',metadata:{toolId}}}));
-      }
-    };
-    form.addEventListener('submit',(event)=>{event.preventDefault();execute();});
-    form.addEventListener('reset',()=>{queueMicrotask(()=>{results.classList.remove('visible');error.classList.remove('visible');});});
+    if (!(root instanceof HTMLElement) || root.dataset.bound === '1') return; root.dataset.bound = '1';
+    const toolId=root.dataset.toolId??'', locale=root.dataset.locale??'en';
+    const form=root.querySelector('[data-form]'), results=root.querySelector('[data-results]'), section=root.querySelector('[data-results-section]'), error=root.querySelector('[data-error]'), placeholder=root.querySelector('[data-result-placeholder]');
+    if(!(form instanceof HTMLFormElement)||!(results instanceof HTMLElement)||!(section instanceof HTMLElement)||!(error instanceof HTMLElement)||!(placeholder instanceof HTMLElement))return;
+    const addCopy=(card,value)=>{const button=document.createElement('button');button.type='button';button.className='result-copy';button.textContent=root.dataset.copy||'Copy';button.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(value);button.textContent=root.dataset.copied||'Copied';setTimeout(()=>button.textContent=root.dataset.copy||'Copy',1200)}catch{}});card.append(button)};
+    const execute=()=>{try{const data=new FormData(form),values={};for(const [key,raw] of data.entries()){const input=form.elements.namedItem(key);values[key]=input instanceof HTMLInputElement&&input.type==='number'?parseLocaleNumber(String(raw),locale):String(raw)}const output=runCalculator(toolId,values);results.innerHTML='';for(const item of output){const card=document.createElement('div');card.className='result-card';const label=document.createElement('span');label.className='result-label';label.textContent=localizeLabel(locale as any,item.label);const value=document.createElement('strong');value.className='result-value';value.textContent=typeof item.value==='number'?`${formatNumber(item.value,locale,item.maximumFractionDigits??6)}${item.unit?` ${item.unit}`:''}`:`${item.value}${item.unit?` ${item.unit}`:''}`;card.append(label,value);addCopy(card,value.textContent||'');results.append(card)}error.classList.remove('visible');placeholder.hidden=true;results.hidden=false;root.classList.add('has-results');window.dispatchEvent(new CustomEvent('utility:analytics',{detail:{event:'tool_completed',metadata:{toolId}}}))}catch(cause){placeholder.hidden=false;results.hidden=true;root.classList.remove('has-results');error.textContent=cause instanceof Error?cause.message:'Calculation error';error.classList.add('visible');window.dispatchEvent(new CustomEvent('utility:analytics',{detail:{event:'tool_error_code',metadata:{toolId}}}))}};
+    form.addEventListener('submit',(event)=>{event.preventDefault();execute()});
+    form.addEventListener('reset',()=>queueMicrotask(()=>{results.innerHTML='';results.hidden=true;placeholder.hidden=false;root.classList.remove('has-results');error.classList.remove('visible')}));
   });
 </script>

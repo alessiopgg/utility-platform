@@ -1,5 +1,7 @@
 ---
 import LocaleSwitcher from './LocaleSwitcher.astro';
+import GlobalSearch from './GlobalSearch.astro';
+import BrandMark from './BrandMark.astro';
 import { homePath } from '../core/routes.ts';
 import { locales } from '../i18n/config.ts';
 import type { LocaleId } from '../core/types.ts';
@@ -13,21 +15,13 @@ const paths = localePaths ?? Object.fromEntries(locales.map((l)=>[l,homePath(l)]
 <header class="site-header">
   <div class="container header-row">
     <a class="brand" href={homePath(locale)} aria-label={`${SITE_NAME} — ${t.home}`}>
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 40 40">
-          <path d="M7.5 13.2c3.5 2.4 7.4 3.6 11.5 3.6 5 0 9.4-1.5 13.5-4.5" />
-          <path d="M7.5 20c3.5 2.4 7.4 3.6 11.5 3.6 5 0 9.4-1.5 13.5-4.5" />
-          <path d="M7.5 26.8c3.5 2.4 7.4 3.6 11.5 3.6 5 0 9.4-1.5 13.5-4.5" />
-        </svg>
-      </span>
-      <span class="brand-copy">
-        <strong>{SITE_NAME}</strong>
-        <small>{t.tools}</small>
-      </span>
+      <BrandMark />
+      <span class="brand-wordmark">Utility<span>Lake</span></span>
     </a>
 
+    <div class="header-search"><GlobalSearch locale={locale} /></div>
+
     <nav class="header-actions" aria-label={t.categories}>
-      <a class="nav-link" href={`${homePath(locale)}#tool-search`}>{t.search}</a>
       <a class="nav-link" href={`${homePath(locale)}#categories`}>{t.categories}</a>
       <LocaleSwitcher locale={locale} paths={paths} label={t.language} />
     </nav>

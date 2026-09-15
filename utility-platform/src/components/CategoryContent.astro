@@ -1,12 +1,16 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import CategoryIcon from './CategoryIcon.astro';
 import { categories, tools } from '../core/registry.ts';
 import { categoryPath, homePath, toolPath } from '../core/routes.ts';
 import { locales } from '../i18n/config.ts';
 import type { LocaleId } from '../core/types.ts';
 import { ui } from '../i18n/ui.ts';
-import { categoryDescription, categoryName, toolName } from '../i18n/content.ts';
-import { toolSeo } from '../core/seo.ts';
+import { interactions } from '../i18n/interactions.ts';
+import { categoryName, toolName, toolsCount } from '../i18n/content.ts';
+import { SITE_NAME } from '../core/site.ts';
+import { categoryUi } from '../core/category-ui.ts';
+import { categoryLead, v3 } from '../i18n/v3.ts';
 interface Props { locale: LocaleId; categorySlug: string; }
 const { locale, categorySlug } = Astro.props;
 const category = categories.find((item)=>item.slug===categorySlug);
@@ -14,62 +18,59 @@ if (!category) throw new Error(`Unknown category ${categorySlug}`);
 const activeTools = tools.filter((tool)=>tool.categorySlug===categorySlug && tool.implemented);
 const localePaths = Object.fromEntries(locales.map((id)=>[id,categoryPath(id,categorySlug)]));
 const t = ui(locale);
+const v = v3(locale);
+const ix = interactions(locale);
 const displayCategory = categoryName(locale,category.name);
-const description = categoryDescription(locale,category.name,activeTools.length);
+const description = categoryLead(locale,displayCategory);
+const config = categoryUi[categorySlug];
+const featured = (config?.featured ?? []).map((id)=>activeTools.find((tool)=>tool.id===id)).filter((tool): tool is (typeof activeTools)[number] => Boolean(tool)).slice(0,6);
+const grouped = (config?.groups ?? []).map((group)=>({ ...group, tools: group.toolIds.map((id)=>activeTools.find((tool)=>tool.id===id)).filter((tool): tool is (typeof activeTools)[number] => Boolean(tool)) })).filter((group)=>group.tools.length);
+const related = (config?.related ?? []).map((slug)=>categories.find((item)=>item.slug===slug)).filter((item): item is (typeof categories)[number] => Boolean(item));
 ---
-<BaseLayout locale={locale} title={`${displayCategory} — ${t.siteName}`} description={description} canonicalPath={categoryPath(locale,categorySlug)} localePaths={localePaths}>
-  <div class="container">
-    <nav class="breadcrumb">
-      <a href={homePath(locale)}>{t.home}</a>
-      <span>›</span>
-      <span>{displayCategory}</span>
-    </nav>
+<BaseLayout locale={locale} title={`${displayCategory} — ${SITE_NAME}`} description={description} canonicalPath={categoryPath(locale,categorySlug)} localePaths={localePaths}>
+  <div class="category-page" data-category={categorySlug}>
+    <div class="container">
+      <nav class="breadcrumb" aria-label={t.categories}><a href={homePath(locale)}>{t.home}</a><span aria-hidden="true">/</span><span aria-current="page">{displayCategory}</span></nav>
 
-    <section class="tool-header">
-      <div class="eyebrow"><span class="eyebrow-dot"></span>{activeTools.length} {t.tools}</div>
-      <h1>{displayCategory}</h1>
-      <p>{description}</p>
-    </section>
+      <section class="category-hero">
+        <div class="category-hero-copy">
+          <CategoryIcon slug={categorySlug} size="lg" />
+          <div><span class="category-overline">{toolsCount(locale,activeTools.length)}</span><h1>{displayCategory}</h1><p>{description}</p></div>
+        </div>
+        <div class="category-search-wrap">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.4-3.4"></path></svg>
+          <input type="search" placeholder={t.searchPlaceholder} aria-label={t.search} data-category-search autocomplete="off" />
+          <span data-category-count>{activeTools.length}</span>
+        </div>
+      </section>
 
-    <div class="category-page-search">
-      <div class="search-box">
-        <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="11" cy="11" r="7"></circle>
-          <path d="m20 20-3.4-3.4"></path>
-        </svg>
-        <input type="search" placeholder={t.searchPlaceholder} aria-label={t.search} data-category-search autocomplete="off" />
-      </div>
-    </div>
+      {featured.length > 0 && <section class="category-section featured-tools-section"><div class="category-section-heading"><span>01</span><h2>{v.featuredTools}</h2></div><div class="featured-tool-grid">{featured.map((tool)=><a class="featured-tool-card" href={toolPath(locale,tool)}><span class="featured-tool-number">{String(featured.indexOf(tool)+1).padStart(2,'0')}</span><div><h3>{toolName(locale,tool)}</h3><p>{v.openTool}</p></div><span class="featured-tool-arrow" aria-hidden="true">↗</span></a>)}</div></section>}
 
-    <div class="tools-list" data-category-tool-list>
-      {activeTools.map((tool) => {
-        const seo = toolSeo(locale,tool);
-        return (
-          <a
-            class="tool-card"
-            href={toolPath(locale,tool)}
-            data-category-tool
-            data-search-text={`${toolName(locale,tool)} ${tool.name} ${seo.description}`}
-          >
-            <div class="tool-card-top">
-              <h2>{toolName(locale,tool)}</h2>
-              <span class="tool-card-arrow" aria-hidden="true">↗</span>
-            </div>
-            <p>{seo.description}</p>
-          </a>
-        );
-      })}
+      {grouped.length > 0 && <section class="category-section purpose-section"><div class="category-section-heading"><span>02</span><h2>{v.browseByPurpose}</h2></div><div class="purpose-grid">{grouped.map((group)=><article class="purpose-group"><h3>{locale === 'en' ? group.title : group.tools.slice(0,2).map((tool)=>toolName(locale,tool)).join(' · ')}</h3><div>{group.tools.map((tool)=><a href={toolPath(locale,tool)}>{toolName(locale,tool)}<span aria-hidden="true">→</span></a>)}</div></article>)}</div></section>}
+
+      <section class="category-section all-category-tools-section">
+        <div class="category-section-heading"><span>03</span><h2>{v.allCategoryTools}</h2></div>
+        <div class="compact-tool-list" data-category-tool-list>
+          {activeTools.map((tool)=><a href={toolPath(locale,tool)} data-category-tool data-search-text={`${toolName(locale,tool)} ${tool.name}`}><span>{toolName(locale,tool)}</span><small>{v.openTool}</small><span aria-hidden="true">↗</span></a>)}
+        </div>
+        <p class="empty-state" data-category-empty hidden>{ix.noSearchResults}</p>
+      </section>
+
+      {related.length > 0 && <section class="category-section related-categories-section"><div class="category-section-heading"><span>04</span><h2>{v.relatedCategories}</h2></div><div class="related-category-row">{related.map((item)=><a href={categoryPath(locale,item.slug)}><CategoryIcon slug={item.slug} size="sm" /><span>{categoryName(locale,item.name)}</span><span aria-hidden="true">→</span></a>)}</div></section>}
     </div>
   </div>
 </BaseLayout>
 
 <script>
   const search = document.querySelector('[data-category-search]');
+  const count = document.querySelector('[data-category-count]');
+  const empty = document.querySelector('[data-category-empty]');
+  const items = Array.from(document.querySelectorAll('[data-category-tool]'));
   search?.addEventListener('input',(event)=>{
-    const q = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value.toLowerCase().trim() : '';
-    document.querySelectorAll('[data-category-tool]').forEach((item)=>{
-      if (!(item instanceof HTMLElement)) return;
-      item.hidden = q.length > 0 && !(item.dataset.searchText ?? '').toLowerCase().includes(q);
-    });
+    const q = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim() : '';
+    let visible=0;
+    for(const item of items){if(!(item instanceof HTMLElement))continue;const text=(item.dataset.searchText??'').toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');const show=!q||text.includes(q);item.hidden=!show;if(show)visible+=1;}
+    if(count instanceof HTMLElement) count.textContent=String(visible);
+    if(empty instanceof HTMLElement) empty.hidden=visible>0;
   });
 </script>

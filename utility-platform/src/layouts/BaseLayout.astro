@@ -1,9 +1,12 @@
 ---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
+import BrandMark from '../components/BrandMark.astro';
 import { localeMeta, locales } from '../i18n/config.ts';
-import { homePath } from '../core/routes.ts';
+import { homePath, localePrefix } from '../core/routes.ts';
 import { ADSENSE_CLIENT, PLAUSIBLE_DOMAIN, SITE_NAME } from '../core/site.ts';
+import { ui } from '../i18n/ui.ts';
+import { legal } from '../i18n/legal.ts';
 import type { LocaleId } from '../core/types.ts';
 interface Props {
   locale: LocaleId;
@@ -15,9 +18,12 @@ interface Props {
 }
 const { locale, title, description, canonicalPath, localePaths, noindex=false } = Astro.props;
 const meta = localeMeta[locale];
+const t = ui(locale);
+const legalCopy = legal(locale);
 const site = Astro.site ?? new URL('https://example.com');
 const canonical = new URL(canonicalPath, site);
 const paths = localePaths ?? Object.fromEntries(locales.map((id)=>[id,homePath(id)]));
+const legalPath = (kind:string) => `${localePrefix(locale)}/${kind}/`.replace('//','/');
 ---
 <!doctype html>
 <html lang={meta.htmlLang} dir={meta.dir}>
@@ -29,8 +35,10 @@ const paths = localePaths ?? Object.fromEntries(locales.map((id)=>[id,homePath(i
     <link rel="canonical" href={canonical} />
     {locales.map((id)=><link rel="alternate" hreflang={id} href={new URL(paths[id] ?? '/', site)} />)}
     <link rel="alternate" hreflang="x-default" href={new URL(paths.en ?? '/', site)} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
-    <meta name="theme-color" content="#111827" />
+    <meta name="theme-color" content="#123B4A" />
+    <meta name="color-scheme" content="light" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
@@ -42,7 +50,20 @@ const paths = localePaths ?? Object.fromEntries(locales.map((id)=>[id,homePath(i
   <body>
     <Header locale={locale} localePaths={paths} />
     <main><slot /></main>
-    <footer><div class="container">© {new Date().getFullYear()} {SITE_NAME} · Privacy-first browser utilities.</div></footer>
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand footer-brand-link" href={homePath(locale)} aria-label={`${SITE_NAME} — ${t.home}`}><BrandMark /><span class="brand-copy"><strong>{SITE_NAME}</strong><small>{t.tagline}</small></span></a>
+        </div>
+        <nav class="footer-links" aria-label={t.tools}>
+          <a href={legalPath('about')}>{legalCopy.about}</a>
+          <a href={legalPath('privacy')}>{legalCopy.privacy}</a>
+          <a href={legalPath('terms')}>{legalCopy.terms}</a>
+          <a href={legalPath('contact')}>{legalCopy.contact}</a>
+        </nav>
+        <p class="footer-meta">© {new Date().getFullYear()} {SITE_NAME}</p>
+      </div>
+    </footer>
     {PLAUSIBLE_DOMAIN && <script is:inline>
       window.addEventListener('utility:analytics', (event) => {
         const detail = event instanceof CustomEvent ? event.detail : null;

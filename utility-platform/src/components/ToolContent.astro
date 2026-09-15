@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import CalculatorWidget from './CalculatorWidget.astro';
 import SimpleToolWidget from './SimpleToolWidget.astro';
 import FileToolWidget from './FileToolWidget.astro';
+import CategoryIcon from './CategoryIcon.astro';
 import { isFileTool } from '../engines/file-registry.ts';
 import AdSlot from './AdSlot.astro';
 import { relatedTools } from '../core/registry.ts';
@@ -12,13 +13,14 @@ import { toolSeo } from '../core/seo.ts';
 import type { LocaleId, ToolDefinition } from '../core/types.ts';
 import { ui } from '../i18n/ui.ts';
 import { categoryName, howItWorks, toolName } from '../i18n/content.ts';
+import { v3 } from '../i18n/v3.ts';
 interface Props { locale: LocaleId; tool: ToolDefinition; }
 const { locale, tool } = Astro.props;
 const t = ui(locale);
+const v = v3(locale);
 const seo = toolSeo(locale,tool);
 const localePaths = Object.fromEntries(locales.map((id)=>[id,toolPath(id,tool)]));
 const related = relatedTools(tool).filter((item)=>item.implemented);
-const relatedWithSeo = related.map((item)=>({ item, seo: toolSeo(locale,item) }));
 const fileTool = isFileTool(tool.engine,tool.id);
 const displayName = toolName(locale,tool);
 const displayCategory = categoryName(locale,tool.category);
@@ -26,68 +28,37 @@ const how = howItWorks(locale);
 const jsonLd = { '@context':'https://schema.org', '@type':'WebApplication', name:displayName, applicationCategory:'UtilitiesApplication', operatingSystem:'Any', isAccessibleForFree:true };
 ---
 <BaseLayout locale={locale} title={seo.title} description={seo.description} canonicalPath={seo.canonicalPath} localePaths={localePaths} noindex={!tool.implemented}>
-  <div class="container tool-page">
-    <nav class="breadcrumb">
-      <a href={homePath(locale)}>{t.home}</a>
-      <span>›</span>
-      <a href={categoryPath(locale,tool.categorySlug)}>{displayCategory}</a>
-      <span>›</span>
-      <span>{displayName}</span>
-    </nav>
+  <div class="container tool-page" data-category={tool.categorySlug}>
+    <nav class="breadcrumb" aria-label={t.categories}><a href={homePath(locale)}>{t.home}</a><span aria-hidden="true">/</span><a href={categoryPath(locale,tool.categorySlug)}>{displayCategory}</a><span aria-hidden="true">/</span><span aria-current="page">{displayName}</span></nav>
 
-    <section class="tool-header">
-      <div class="eyebrow"><span class="eyebrow-dot"></span>{displayCategory}</div>
-      <h1>{displayName}</h1>
-      <p>{seo.description}</p>
-      {tool.localOnly && <span class="privacy-badge">✓ {t.privacyLocal} · {t.localDetail}</span>}
+    <header class="tool-intro">
+      <div class="tool-intro-main"><CategoryIcon slug={tool.categorySlug} size="md" /><div><span class="tool-category-label">{displayCategory}</span><h1>{displayName}</h1><p>{seo.description}</p></div></div>
+      {tool.localOnly && <div class="inline-trust"><span aria-hidden="true">✓</span><div><strong>{t.privacyLocal}</strong><small>{t.localDetail}</small></div></div>}
+    </header>
+
+    <section class="workspace-section" aria-label={displayName}>
+      <div class="workspace-label"><span>{v.workspace}</span><span class="workspace-line"></span></div>
+      <div class="tool-stage">
+        {tool.engine === 'calculator' && tool.implemented
+          ? <CalculatorWidget toolId={tool.id} locale={locale} />
+          : fileTool && tool.implemented
+            ? <FileToolWidget toolId={tool.id} engine={tool.engine} locale={locale} actionLabel={displayName} />
+            : tool.implemented
+              ? <SimpleToolWidget toolId={tool.id} engine={tool.engine} locale={locale} actionLabel={displayName} />
+              : <div class="tool-shell"><div class="engine-status"><strong>{t.unavailable}</strong><p>{t.unavailableDetail}</p></div></div>}
+      </div>
     </section>
-
-    <div class="tool-stage">
-      {tool.engine === 'calculator' && tool.implemented
-        ? <CalculatorWidget toolId={tool.id} locale={locale} />
-        : fileTool && tool.implemented
-          ? <FileToolWidget toolId={tool.id} engine={tool.engine} locale={locale} />
-          : tool.implemented
-            ? <SimpleToolWidget toolId={tool.id} engine={tool.engine} locale={locale} />
-            : <div class="tool-shell"><div class="engine-status"><strong>{t.unavailable}</strong><p>{t.unavailableDetail}</p></div></div>
-      }
-    </div>
 
     <AdSlot label={t.ad} />
 
-    <div class="content-grid">
-      <section class="content-panel">
-        <h2>{how.title}</h2>
-        <p>{how.body}</p>
-      </section>
-      {tool.localOnly && (
-        <section class="content-panel">
-          <h2>{t.privacyLocal}</h2>
-          <p>{t.localDetail}</p>
-        </section>
-      )}
-    </div>
+    <section class="tool-information">
+      <div class="tool-information-main"><span class="section-kicker">01</span><h2>{how.title}</h2><p>{how.body}</p></div>
+      {tool.localOnly && <aside class="privacy-note"><span class="privacy-note-icon" aria-hidden="true">✓</span><div><strong>{t.privacyLocal}</strong><p>{t.localDetail}</p></div></aside>}
+    </section>
 
-    {relatedWithSeo.length > 0 && (
-      <section>
-        <h2 class="section-title">{t.related}</h2>
-        <div class="tools-list">
-          {relatedWithSeo.map(({item,seo:relatedSeo})=>
-            <a class="tool-card" href={toolPath(locale,item)}>
-              <div class="tool-card-top">
-                <h3>{toolName(locale,item)}</h3>
-                <span class="tool-card-arrow" aria-hidden="true">↗</span>
-              </div>
-              <p>{relatedSeo.description}</p>
-              <span class="tool-card-meta">{categoryName(locale,item.category)}</span>
-            </a>
-          )}
-        </div>
-      </section>
-    )}
+    {related.length > 0 && <section class="related-section"><div class="related-heading"><span class="section-kicker">02</span><h2>{t.related}</h2></div><div class="related-tool-list">{related.map((item)=><a href={toolPath(locale,item)}><span>{toolName(locale,item)}</span><small>{categoryName(locale,item.category)}</small><span aria-hidden="true">→</span></a>)}</div></section>}
 
     <AdSlot label={t.ad} />
   </div>
-
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 </BaseLayout>
