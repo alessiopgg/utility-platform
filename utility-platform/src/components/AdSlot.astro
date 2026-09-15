@@ -1,8 +1,13 @@
----
+﻿---
 import { ADSENSE_CLIENT, ADSENSE_SLOT } from '../core/site.ts';
-interface Props { label: string; }
-const { label } = Astro.props;
-const enabled = Boolean(ADSENSE_CLIENT && ADSENSE_SLOT);
+
+interface Props {
+  label: string;
+  slot?: string;
+}
+
+const { label, slot = ADSENSE_SLOT } = Astro.props;
+const enabled = Boolean(ADSENSE_CLIENT && slot);
 ---
 {enabled ? (
   <div class="ad-slot ad-slot-live" aria-label={label}>
@@ -10,7 +15,7 @@ const enabled = Boolean(ADSENSE_CLIENT && ADSENSE_SLOT);
       class="adsbygoogle"
       style="display:block"
       data-ad-client={ADSENSE_CLIENT}
-      data-ad-slot={ADSENSE_SLOT}
+      data-ad-slot={slot}
       data-ad-format="auto"
       data-full-width-responsive="true"
     ></ins>

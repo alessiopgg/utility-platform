@@ -1,4 +1,4 @@
-declare module 'yaml' { export function parse(input:string): unknown; export function stringify(input:unknown): string; export function parseDocument(input:string): { errors: unknown[] }; }
+﻿declare module 'yaml' { export function parse(input:string): unknown; export function stringify(input:unknown): string; export function parseDocument(input:string): { errors: unknown[] }; }
 declare module 'prettier/standalone' { export function format(input:string, options:Record<string,unknown>): Promise<string>; }
 declare module 'prettier/plugins/babel';
 declare module 'prettier/plugins/estree';
@@ -25,9 +25,13 @@ interface ImportMetaEnv {
   readonly PUBLIC_CONTACT_EMAIL?: string;
   readonly PUBLIC_ADSENSE_CLIENT?: string;
   readonly PUBLIC_ADSENSE_SLOT?: string;
+  readonly PUBLIC_ADSENSE_SLOT_PRIMARY?: string;
+  readonly PUBLIC_ADSENSE_SLOT_SECONDARY?: string;
+  readonly PUBLIC_ADSENSE_SLOT_TERTIARY?: string;
   readonly PUBLIC_PLAUSIBLE_DOMAIN?: string;
 }
 
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
