@@ -15,3 +15,7 @@ export function categoryPath(locale: LocaleId, categorySlug: string): string {
 export function toolPath(locale: LocaleId, tool: ToolDefinition): string {
   return `${localePrefix(locale)}/tools/${tool.categorySlug}/${tool.id}/`;
 }
+
+export function searchIndexPath(locale: LocaleId): string {
+  return `${localePrefix(locale)}/search-index.json`.replace('//','/');
+}

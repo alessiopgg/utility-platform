@@ -14,9 +14,9 @@ const intros={privacy:t.privacyIntro,terms:t.termsIntro,about:t.aboutIntro,conta
   <div class="container legal-page">
     <nav class="breadcrumb"><a href={homePath(locale)}>←</a><span>{title}</span></nav>
     <h1>{title}</h1><p class="lead">{intros[kind]}</p>
-    {kind==='privacy' && <><h2>Local processing</h2><p>{t.localProcessing}</p><h2>Advertising</h2><p>{t.ads}</p><h2>Analytics</h2><p>{t.analytics}</p><h2>Storage</h2><p>{t.storage}</p></>}
-    {kind==='terms' && <><h2>Use of the tools</h2><p>{t.use}</p><h2>Accuracy and liability</h2><p>{t.liability}</p><h2>Changes</h2><p>{t.changes}</p></>}
-    {kind==='about' && <><p>{t.localProcessing}</p><p>{t.storage}</p></>}
-    {kind==='contact' && <><p>{t.contactBody}</p>{CONTACT_EMAIL ? <p><a class="btn btn-primary" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p> : <p><strong>PUBLIC_CONTACT_EMAIL</strong></p>}</>}
+    {kind==='privacy' && <div class="legal-stack"><p>{t.localProcessing}</p><p>{t.ads}</p><p>{t.analytics}</p><p>{t.storage}</p></div>}
+    {kind==='terms' && <div class="legal-stack"><p>{t.use}</p><p>{t.liability}</p><p>{t.changes}</p></div>}
+    {kind==='about' && <div class="legal-stack"><p>{t.localProcessing}</p><p>{t.storage}</p></div>}
+    {kind==='contact' && <div class="legal-stack"><p>{t.contactBody}</p>{CONTACT_EMAIL ? <p><a class="btn btn-primary" href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p> : <p><strong>PUBLIC_CONTACT_EMAIL</strong></p>}</div>}
   </div>
 </BaseLayout>

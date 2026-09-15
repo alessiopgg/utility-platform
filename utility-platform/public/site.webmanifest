@@ -1,8 +1,11 @@
 {
-  "name": "Utility Platform",
-  "short_name": "Utilities",
+  "name": "UtilityLake",
+  "short_name": "UtilityLake",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#111827"
+  "background_color": "#F4F8F7",
+  "theme_color": "#123B4A",
+  "icons": [
+    {"src":"/favicon.svg","sizes":"any","type":"image/svg+xml","purpose":"any maskable"}
+  ]
 }

@@ -2,68 +2,83 @@
 import { getFileSpec } from '../engines/file-registry.ts';
 import type { EngineId, LocaleId } from '../core/types.ts';
 import { ui } from '../i18n/ui.ts';
+import { interactions } from '../i18n/interactions.ts';
 import { localizeLabel } from '../i18n/content.ts';
-interface Props { toolId: string; engine: EngineId; locale: LocaleId; }
-const { toolId, engine, locale } = Astro.props;
+import { v3 } from '../i18n/v3.ts';
+interface Props { toolId: string; engine: EngineId; locale: LocaleId; actionLabel?: string; }
+const { toolId, engine, locale, actionLabel } = Astro.props;
 const spec = getFileSpec(engine,toolId);
 if (!spec) throw new Error(`Missing file spec: ${engine}/${toolId}`);
 const t=ui(locale);
+const ix=interactions(locale);
+const v=v3(locale);
+const acceptedText=(accept?:string)=>{if(!accept)return'';const parts=accept.split(',').map(x=>x.trim()).filter(Boolean);const ext=parts.filter(x=>x.startsWith('.')).map(x=>x.toUpperCase());return [...new Set(ext.length?ext:parts)].join(' · ')};
 ---
-<div class="tool-shell" data-file-tool data-tool-id={toolId} data-engine={engine} data-locale={locale}>
-  <form data-form>
+<div class="tool-shell file-tool-shell" data-file-tool data-tool-id={toolId} data-engine={engine} data-locale={locale} data-copy={t.copy} data-copied={t.copied} data-remove={ix.remove} data-move-up={ix.moveUp} data-move-down={ix.moveDown} data-processing={ix.processing} data-download={ix.download} data-unsupported={ix.unsupportedFileType}>
+  <form data-form novalidate>
     <div class="tool-grid">
-      {spec.fields.map((field)=><div class:list={["field", (field.type === 'textarea' || field.type === 'file') && 'full']}>
-        <label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label>
-        {field.type === 'file' ? <input id={`${toolId}-${field.key}`} name={field.key} type="file" accept={field.accept} multiple={field.multiple ? true : undefined} required={field.required ? true : undefined} />
-        : field.type === 'select' ? <select id={`${toolId}-${field.key}`} name={field.key}>{field.options?.map((opt)=><option value={opt.value} selected={String(field.defaultValue??'')===opt.value}>{localizeLabel(locale,opt.label)}</option>)}</select>
-        : field.type === 'textarea' ? <textarea id={`${toolId}-${field.key}`} name={field.key} rows={field.rows??8} placeholder={field.placeholder}>{field.defaultValue}</textarea>
-        : <input id={`${toolId}-${field.key}`} name={field.key} type={field.type} value={field.defaultValue} placeholder={field.placeholder} min={field.min} max={field.max} step={field.type==='number'?(field.step??'any'):undefined} inputmode={field.type==='number'?'decimal':undefined} />}
+      {spec.fields.map((field)=><div class:list={["field", (field.type === 'textarea' || field.type === 'file') && 'full', field.type === 'file' && 'file-field']}>
+        {field.type === 'file' ? (
+          <>
+            <div class="field-head"><label id={`${toolId}-${field.key}-label`} for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label></div>
+            <input class="file-native-input" id={`${toolId}-${field.key}`} name={field.key} type="file" accept={field.accept} multiple={field.multiple ? true : undefined} required={field.required ? true : undefined} data-file-input />
+            <div class="file-dropzone" role="button" tabindex="0" aria-labelledby={`${toolId}-${field.key}-label`} data-dropzone data-input-id={`${toolId}-${field.key}`} aria-required={field.required ? 'true' : undefined}>
+              <span class="file-dropzone-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L8 8m4-4 4 4"/><path d="M5 13v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></svg></span>
+              <strong>{ix.dropFiles}</strong>
+              <span class="file-browse">{ix.browseFiles}</span>
+              {field.accept && <small>{acceptedText(field.accept)}</small>}
+            </div>
+            <div class="file-queue" data-file-queue data-input-id={`${toolId}-${field.key}`} hidden></div>
+          </>
+        ) : field.type === 'select' ? <><div class="field-head"><label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label></div><select id={`${toolId}-${field.key}`} name={field.key}>{field.options?.map((opt)=><option value={opt.value} selected={String(field.defaultValue??'')===opt.value}>{localizeLabel(locale,opt.label)}</option>)}</select></>
+        : field.type === 'textarea' ? <><div class="field-head"><label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label></div><textarea id={`${toolId}-${field.key}`} name={field.key} rows={field.rows??8} placeholder={field.placeholder}>{field.defaultValue}</textarea></>
+        : <><div class="field-head"><label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label></div><input id={`${toolId}-${field.key}`} name={field.key} type={field.type} value={field.defaultValue} placeholder={field.placeholder} min={field.min} max={field.max} step={field.type==='number'?(field.step??'any'):undefined} inputmode={field.type==='number'?'decimal':undefined} /></>}
       </div>)}
     </div>
-    <div class="actions"><button class="btn btn-primary" type="submit">{t.calculate}</button><button class="btn btn-secondary" type="reset">{t.reset}</button></div>
+    <div class="actions action-bar"><button class="btn btn-primary" type="submit" data-submit>{actionLabel ?? t.calculate}</button><button class="btn btn-text" type="reset">{t.reset}</button></div>
   </form>
+  <div class="processing-panel" data-processing-state role="status" aria-live="polite" hidden><span class="processing-spinner" aria-hidden="true"></span><span>{ix.processing}</span><span class="processing-track" aria-hidden="true"><span></span></span></div>
   <div class="error" data-error role="alert"></div>
-  <div class="results" data-results aria-live="polite"></div>
+  <section class="results-section" data-results-section hidden>
+    <div class="results-section-head"><span>{t.result}</span><button class="btn btn-text btn-compact" type="button" data-start-over>{v.startAgain}</button></div>
+    <div class="results file-results" data-results aria-live="polite"></div>
+  </section>
 </div>
 <script>
   import { runFileTool } from '../engines/file-registry.ts';
   import { parseLocaleNumber, formatNumber } from '../core/number.ts';
   import { localizeLabel } from '../i18n/content.ts';
+import { v3 } from '../i18n/v3.ts';
   document.querySelectorAll('[data-file-tool]').forEach((root)=>{
-    if(!(root instanceof HTMLElement)||root.dataset.bound==='1') return; root.dataset.bound='1';
+    if(!(root instanceof HTMLElement)||root.dataset.bound==='1')return;root.dataset.bound='1';
     const toolId=root.dataset.toolId??'',engine=root.dataset.engine??'',locale=root.dataset.locale??'en';
-    const form=root.querySelector('[data-form]'),results=root.querySelector('[data-results]'),error=root.querySelector('[data-error]');
+    const form=root.querySelector('[data-form]'),results=root.querySelector('[data-results]'),section=root.querySelector('[data-results-section]'),error=root.querySelector('[data-error]'),processing=root.querySelector('[data-processing-state]'),startOver=root.querySelector('[data-start-over]');
     let objectUrls=[];
-    if(!(form instanceof HTMLFormElement)||!(results instanceof HTMLElement)||!(error instanceof HTMLElement))return;
-    const clearUrls=()=>{for(const url of objectUrls)URL.revokeObjectURL(url);objectUrls=[];};
-    form.addEventListener('submit',async(event)=>{
-      event.preventDefault(); clearUrls();
-      try{
-        const values={};
-        for(const el of Array.from(form.elements)){
-          if(!(el instanceof HTMLInputElement||el instanceof HTMLTextAreaElement||el instanceof HTMLSelectElement)||!el.name) continue;
-          if(el instanceof HTMLInputElement&&el.type==='file'){
-            const files=Array.from(el.files??[]); values[el.name]=files.length>1?files:(files[0]??new File([],''));
-          } else if(el instanceof HTMLInputElement&&el.type==='number') values[el.name]=parseLocaleNumber(el.value,locale);
-          else values[el.name]=el.value;
-        }
-        const output=await runFileTool(engine,toolId,values); results.innerHTML='';
-        for(const item of output){
-          const card=document.createElement('div');card.className='result-card';
-          const label=document.createElement('span');label.className='result-label';label.textContent=localizeLabel(locale as any,item.label);card.append(label);
-          if(item.kind==='file'){
-            const url=URL.createObjectURL(item.blob);objectUrls.push(url);
-            if(item.preview&&item.blob.type.startsWith('image/')){const img=document.createElement('img');img.src=url;img.alt=item.filename;img.loading='lazy';img.style.maxWidth='100%';img.style.maxHeight='360px';img.style.objectFit='contain';img.style.marginBlock='.75rem';card.append(img);}
-            const a=document.createElement('a');a.className='btn btn-primary';a.href=url;a.download=item.filename;a.textContent=`Download ${item.filename}`;card.append(a);
-          } else {
-            if(item.color) card.style.borderInlineStart=`6px solid ${item.color}`;
-            const value=item.multiline?document.createElement('pre'):document.createElement('strong');value.className='result-value';value.textContent=typeof item.value==='number'?`${formatNumber(item.value,locale)}${item.unit?` ${item.unit}`:''}`:`${item.value}${item.unit?` ${item.unit}`:''}`;if(item.multiline){value.style.whiteSpace='pre-wrap';value.style.fontFamily='ui-monospace, SFMono-Regular, Menlo, monospace';value.style.fontSize='.95rem';}card.append(value);
-          }
-          results.append(card);
-        }
-        error.classList.remove('visible');results.classList.add('visible');
-      }catch(cause){results.classList.remove('visible');error.textContent=cause instanceof Error?cause.message:'Tool error';error.classList.add('visible');}
-    });
-    form.addEventListener('reset',()=>queueMicrotask(()=>{clearUrls();results.innerHTML='';results.classList.remove('visible');error.classList.remove('visible')}));
+    if(!(form instanceof HTMLFormElement)||!(results instanceof HTMLElement)||!(section instanceof HTMLElement)||!(error instanceof HTMLElement)||!(processing instanceof HTMLElement))return;
+    const clearUrls=()=>{for(const url of objectUrls)URL.revokeObjectURL(url);objectUrls=[]};
+    const humanSize=(bytes)=>{if(bytes<1024)return`${bytes} B`;const units=['KB','MB','GB'];let value=bytes/1024,index=0;while(value>=1024&&index<units.length-1){value/=1024;index+=1}return`${value>=10?value.toFixed(1):value.toFixed(2)} ${units[index]}`};
+    const acceptsFile=(file,accept)=>{if(!accept)return true;return accept.split(',').map(x=>x.trim().toLowerCase()).some((rule)=>{if(rule.startsWith('.'))return file.name.toLowerCase().endsWith(rule);if(rule.endsWith('/*'))return file.type.toLowerCase().startsWith(rule.slice(0,-1));return file.type.toLowerCase()===rule})};
+    const syncInput=(input,files)=>{const dt=new DataTransfer();for(const file of files)dt.items.add(file);input.files=dt.files;renderQueue(input,files)};
+    const renderQueue=(input,files)=>{
+      const queue=root.querySelector(`[data-file-queue][data-input-id="${CSS.escape(input.id)}"]`);const dropzone=root.querySelector(`[data-dropzone][data-input-id="${CSS.escape(input.id)}"]`);
+      if(!(queue instanceof HTMLElement))return;queue.innerHTML='';queue.hidden=files.length===0;if(dropzone instanceof HTMLElement)dropzone.classList.toggle('has-files',files.length>0);
+      files.forEach((file,index)=>{const row=document.createElement('div');row.className='file-queue-item';
+        const icon=document.createElement('span');icon.className='file-type-icon';icon.setAttribute('aria-hidden','true');icon.textContent=(file.name.split('.').pop()||'FILE').slice(0,4).toUpperCase();
+        const meta=document.createElement('span');meta.className='file-queue-meta';const name=document.createElement('strong');name.textContent=file.name;name.title=file.name;const size=document.createElement('small');size.textContent=humanSize(file.size);meta.append(name,size);
+        const actions=document.createElement('span');actions.className='file-queue-actions';
+        const makeButton=(label,action,text,disabled=false)=>{const b=document.createElement('button');b.type='button';b.className='icon-btn queue-action';b.setAttribute('aria-label',label);b.title=label;b.dataset.fileAction=action;b.dataset.fileIndex=String(index);b.textContent=text;b.disabled=disabled;return b};
+        if(input.multiple&&files.length>1){actions.append(makeButton(root.dataset.moveUp||'Move up','up','↑',index===0),makeButton(root.dataset.moveDown||'Move down','down','↓',index===files.length-1));}
+        actions.append(makeButton(root.dataset.remove||'Remove','remove','×'));
+        row.append(icon,meta,actions);queue.append(row)});
+    };
+    root.querySelectorAll('[data-file-input]').forEach((node)=>{if(!(node instanceof HTMLInputElement))return;node.addEventListener('change',()=>{const files=Array.from(node.files??[]).filter(f=>acceptsFile(f,node.accept));syncInput(node,node.multiple?files:files.slice(0,1));error.classList.remove('visible')});});
+    root.querySelectorAll('[data-dropzone]').forEach((zone)=>{if(!(zone instanceof HTMLElement))return;const getInput=()=>document.getElementById(zone.dataset.inputId??'');const open=()=>{const input=getInput();if(input instanceof HTMLInputElement&&!input.disabled)input.click()};zone.addEventListener('click',open);zone.addEventListener('keydown',(event)=>{if(event.key==='Enter'||event.key===' '){event.preventDefault();open()}});zone.addEventListener('dragover',(event)=>{event.preventDefault();zone.classList.add('is-dragging')});zone.addEventListener('dragleave',()=>zone.classList.remove('is-dragging'));zone.addEventListener('drop',(event)=>{event.preventDefault();zone.classList.remove('is-dragging');const input=getInput();if(!(input instanceof HTMLInputElement))return;const dropped=Array.from(event.dataTransfer?.files??[]),valid=dropped.filter(f=>acceptsFile(f,input.accept));if(!valid.length&&dropped.length){error.textContent=root.dataset.unsupported||'Unsupported file type';error.classList.add('visible');return}const existing=input.multiple?Array.from(input.files??[]):[];syncInput(input,input.multiple?[...existing,...valid]:valid.slice(0,1));error.classList.remove('visible')})});
+    root.addEventListener('click',(event)=>{const target=event.target;if(!(target instanceof HTMLElement))return;const button=target.closest('[data-file-action]');if(!(button instanceof HTMLButtonElement))return;const queue=button.closest('[data-file-queue]');if(!(queue instanceof HTMLElement))return;const input=document.getElementById(queue.dataset.inputId??'');if(!(input instanceof HTMLInputElement))return;const files=Array.from(input.files??[]),index=Number(button.dataset.fileIndex);const action=button.dataset.fileAction;if(action==='remove')files.splice(index,1);if(action==='up'&&index>0)[files[index-1],files[index]]=[files[index],files[index-1]];if(action==='down'&&index<files.length-1)[files[index+1],files[index]]=[files[index],files[index+1]];syncInput(input,files)});
+    const setBusy=(busy)=>{root.setAttribute('aria-busy',String(busy));processing.hidden=!busy;for(const control of Array.from(form.elements)){if(control instanceof HTMLInputElement||control instanceof HTMLTextAreaElement||control instanceof HTMLSelectElement||control instanceof HTMLButtonElement)control.disabled=busy;}root.querySelectorAll('[data-dropzone]').forEach((zone)=>{if(zone instanceof HTMLElement)zone.setAttribute('aria-disabled',String(busy))})};
+    const addCopy=(card,value)=>{const button=document.createElement('button');button.type='button';button.className='result-copy';button.textContent=root.dataset.copy||'Copy';button.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(value);button.textContent=root.dataset.copied||'Copied';setTimeout(()=>button.textContent=root.dataset.copy||'Copy',1200)}catch{}});card.append(button)};
+    form.addEventListener('submit',async(event)=>{event.preventDefault();clearUrls();results.innerHTML='';section.hidden=true;error.classList.remove('visible');
+      try{const values={};for(const el of Array.from(form.elements)){if(!(el instanceof HTMLInputElement||el instanceof HTMLTextAreaElement||el instanceof HTMLSelectElement)||!el.name)continue;if(el instanceof HTMLInputElement&&el.type==='file'){const files=Array.from(el.files??[]);values[el.name]=files.length>1?files:(files[0]??new File([],''))}else if(el instanceof HTMLInputElement&&el.type==='number')values[el.name]=parseLocaleNumber(el.value,locale);else values[el.name]=el.value}setBusy(true);await new Promise(resolve=>requestAnimationFrame(()=>resolve(null)));const output=await runFileTool(engine,toolId,values);for(const item of output){const card=document.createElement('div');card.className='result-card';const label=document.createElement('span');label.className='result-label';label.textContent=localizeLabel(locale as any,item.label);card.append(label);if(item.kind==='file'){card.classList.add('file-result-card');const url=URL.createObjectURL(item.blob);objectUrls.push(url);if(item.preview&&item.blob.type.startsWith('image/')){const preview=document.createElement('div');preview.className='file-preview';const img=document.createElement('img');img.src=url;img.alt=item.filename;img.loading='lazy';preview.append(img);card.append(preview)}const meta=document.createElement('div');meta.className='download-meta';const name=document.createElement('strong');name.textContent=item.filename;name.title=item.filename;const size=document.createElement('small');size.textContent=humanSize(item.blob.size);meta.append(name,size);card.append(meta);const a=document.createElement('a');a.className='btn btn-primary download-btn';a.href=url;a.download=item.filename;a.textContent=`${root.dataset.download||'Download'} ${item.filename}`;card.append(a)}else{if(item.color)card.style.borderInlineStart=`6px solid ${item.color}`;const value=item.multiline?document.createElement('pre'):document.createElement('strong');value.className='result-value';value.textContent=typeof item.value==='number'?`${formatNumber(item.value,locale)}${item.unit?` ${item.unit}`:''}`:`${item.value}${item.unit?` ${item.unit}`:''}`;if(item.multiline)value.classList.add('result-code');card.append(value);addCopy(card,value.textContent||'')}results.append(card)}section.hidden=false;window.dispatchEvent(new CustomEvent('utility:analytics',{detail:{event:'tool_completed',metadata:{toolId}}}))}catch(cause){section.hidden=true;error.textContent=cause instanceof Error?cause.message:'Tool error';error.classList.add('visible');window.dispatchEvent(new CustomEvent('utility:analytics',{detail:{event:'tool_error_code',metadata:{toolId}}}))}finally{setBusy(false)}});
+    startOver?.addEventListener('click',()=>form.reset());
+    form.addEventListener('reset',()=>queueMicrotask(()=>{clearUrls();results.innerHTML='';section.hidden=true;error.classList.remove('visible');processing.hidden=true;root.querySelectorAll('[data-file-input]').forEach((input)=>{if(input instanceof HTMLInputElement)renderQueue(input,[])});}));
   });
 </script>

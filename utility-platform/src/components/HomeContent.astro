@@ -1,47 +1,162 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import LakeHeroVisual from './LakeHeroVisual.astro';
+import CategoryIcon from './CategoryIcon.astro';
 import { categories, tools } from '../core/registry.ts';
-import { categoryPath, toolPath, homePath } from '../core/routes.ts';
+import { categoryPath, toolPath, homePath, searchIndexPath } from '../core/routes.ts';
 import { locales } from '../i18n/config.ts';
 import type { LocaleId } from '../core/types.ts';
 import { ui } from '../i18n/ui.ts';
-import { categoryName, homeIntro, toolName, toolsCount } from '../i18n/content.ts';
+import { categoryName, toolName, toolsCount } from '../i18n/content.ts';
 import { SITE_NAME } from '../core/site.ts';
+import { interactions } from '../i18n/interactions.ts';
+import { v3 } from '../i18n/v3.ts';
+import { categoryUi, homePrimaryCategorySlugs, homeQuickToolIds } from '../core/category-ui.ts';
+
 interface Props { locale: LocaleId; }
 const { locale } = Astro.props;
 const t = ui(locale);
+const v = v3(locale);
+const ix = interactions(locale);
 const activeTools = tools.filter((tool)=>tool.implemented);
 const activeCategories = categories.filter((category)=>activeTools.some((tool)=>tool.categorySlug===category.slug));
 const localePaths = Object.fromEntries(locales.map((id)=>[id,homePath(id)]));
+const primaryCategories = homePrimaryCategorySlugs.map((slug)=>activeCategories.find((category)=>category.slug===slug)).filter((category): category is (typeof activeCategories)[number] => Boolean(category));
+const secondaryCategories = activeCategories.filter((category)=>!homePrimaryCategorySlugs.includes(category.slug));
+const quickTools = homeQuickToolIds.map((id)=>activeTools.find((tool)=>tool.id===id)).filter((tool): tool is (typeof activeTools)[number] => Boolean(tool));
 ---
 <BaseLayout locale={locale} title={`${SITE_NAME} — Browser utilities`} description={t.tagline} canonicalPath={homePath(locale)} localePaths={localePaths}>
-  <div class="container">
-    <section class="hero">
-      <h1>{t.tagline}</h1>
-      <p>{homeIntro(locale,activeTools.length)}</p>
-      <div class="search-box"><input type="search" placeholder={t.searchPlaceholder} aria-label={t.search} data-tool-search /></div>
-    </section>
-    <section id="categories">
-      <h2>{t.categories}</h2>
-      <div class="grid">
-        {activeCategories.map((category)=><a class="card category-card" href={categoryPath(locale,category.slug)} data-search-item data-search-text={`${categoryName(locale,category.name)} ${category.name} ${category.slug}`}><h3>{categoryName(locale,category.name)}</h3><p>{toolsCount(locale,category.count)}</p><span class="count">{toolsCount(locale,activeTools.filter((tool)=>tool.categorySlug===category.slug).length)} →</span></a>)}
+  <div class="home-page">
+    <section class="home-hero">
+      <div class="container home-hero-grid">
+        <div class="home-hero-copy">
+          <div class="hero-kicker"><span></span>{v.heroKicker}</div>
+          <h1>{v.heroTitle}</h1>
+          <p class="hero-lead">{v.heroBody}</p>
+
+          <div class="hero-search" id="tool-search" data-home-search data-index-url={searchIndexPath(locale)} data-empty-label={ix.noSearchResults}>
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.4-3.4"></path></svg>
+            <input type="search" placeholder={t.searchPlaceholder} aria-label={t.search} data-tool-search autocomplete="off" aria-autocomplete="list" aria-controls="tool-search-results" />
+            <kbd class="search-shortcut" aria-hidden="true">/</kbd>
+            <div class="search-suggestions" id="tool-search-results" data-search-suggestions hidden></div>
+          </div>
+
+          <div class="hero-proof">
+            <span class="proof-icon" aria-hidden="true">✓</span>
+            <strong>{t.privacyLocal}</strong>
+            <span>{t.localDetail}</span>
+          </div>
+        </div>
+        <div class="home-hero-art"><LakeHeroVisual /></div>
       </div>
     </section>
-    <section>
-      <h2 class="section-title">{t.allTools}</h2>
-      <div class="tools-list" data-tool-list>
-        {activeTools.map((tool)=><a class="tool-link" href={toolPath(locale,tool)} data-search-item data-search-text={`${toolName(locale,tool)} ${tool.name} ${categoryName(locale,tool.category)}`}>{toolName(locale,tool)}</a>)}
-      </div>
-    </section>
+
+    <div class="container home-sections">
+      <section id="categories" class="home-section primary-category-section">
+        <div class="section-intro">
+          <div><span class="section-kicker">01</span><h2>{v.featuredCategories}</h2></div>
+          <p>{v.featuredCategoriesBody}</p>
+        </div>
+        <div class="feature-category-grid">
+          {primaryCategories.map((category) => {
+            const config = categoryUi[category.slug];
+            const featured = (config?.featured ?? []).map((id)=>activeTools.find((tool)=>tool.id===id)).filter(Boolean).slice(0,3);
+            return (
+              <a class="feature-category-card" data-category={category.slug} href={categoryPath(locale,category.slug)}>
+                <div class="feature-category-top"><CategoryIcon slug={category.slug} size="lg" /><span class="feature-category-arrow" aria-hidden="true">↗</span></div>
+                <div class="feature-category-copy"><h3>{categoryName(locale,category.name)}</h3><p>{featured.map((tool)=>tool ? toolName(locale,tool) : '').join(' · ')}</p></div>
+                <span class="feature-category-meta">{toolsCount(locale,activeTools.filter((tool)=>tool.categorySlug===category.slug).length)}</span>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+
+      <section class="home-section quick-section">
+        <div class="section-intro compact">
+          <div><span class="section-kicker">02</span><h2>{v.quickTasks}</h2></div>
+          <p>{v.quickTasksBody}</p>
+        </div>
+        <div class="quick-task-list">
+          {quickTools.map((tool)=><a class="quick-task" href={toolPath(locale,tool)}><CategoryIcon slug={tool.categorySlug} size="sm" /><span><strong>{toolName(locale,tool)}</strong><small>{categoryName(locale,tool.category)}</small></span><span aria-hidden="true">→</span></a>)}
+        </div>
+      </section>
+
+      <section class="home-section principles-section">
+        <div class="principles-heading"><span class="section-kicker">03</span><h2>{v.whyTitle}</h2><p>{v.whyBody}</p></div>
+        <div class="principles-grid">
+          <article><span class="principle-number">01</span><h3>{v.localTitle}</h3><p>{v.localBody}</p></article>
+          <article><span class="principle-number">02</span><h3>{v.installTitle}</h3><p>{v.installBody}</p></article>
+          <article><span class="principle-number">03</span><h3>{v.speedTitle}</h3><p>{v.speedBody}</p></article>
+        </div>
+      </section>
+
+      <section class="home-section explore-section">
+        <div class="section-intro compact">
+          <div><span class="section-kicker">04</span><h2>{v.exploreTitle}</h2></div>
+          <p>{v.exploreBody}</p>
+        </div>
+        <div class="explore-category-list">
+          {secondaryCategories.map((category)=><a href={categoryPath(locale,category.slug)}><CategoryIcon slug={category.slug} size="sm" /><span>{categoryName(locale,category.name)}</span><span class="explore-count">{activeTools.filter((tool)=>tool.categorySlug===category.slug).length}</span><span aria-hidden="true">→</span></a>)}
+        </div>
+      </section>
+
+      <section class="home-directory-section" aria-label={t.allTools}>
+        <details class="directory" data-directory>
+          <summary><span>{t.allTools}</span><span>{activeTools.length}</span></summary>
+          <div class="directory-body">
+            <div class="directory-links">{activeTools.map((tool)=><a href={toolPath(locale,tool)}>{toolName(locale,tool)}</a>)}</div>
+          </div>
+        </details>
+      </section>
+    </div>
   </div>
 </BaseLayout>
+
 <script>
-  const search = document.querySelector('[data-tool-search]');
-  search?.addEventListener('input',(event)=>{
-    const q = event.currentTarget instanceof HTMLInputElement ? event.currentTarget.value.toLowerCase().trim() : '';
-    document.querySelectorAll('[data-search-item]').forEach((item)=>{
-      if (!(item instanceof HTMLElement)) return;
-      item.hidden = q.length > 0 && !(item.dataset.searchText ?? '').toLowerCase().includes(q);
+  const root = document.querySelector('[data-home-search]');
+  if (root instanceof HTMLElement) {
+    const search = root.querySelector('[data-tool-search]');
+    const suggestions = root.querySelector('[data-search-suggestions]');
+    let index = null;
+    let active = -1;
+    const normalize = (value) => value.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').trim();
+    const ensureIndex = async () => {
+      if (index) return index;
+      const response = await fetch(root.dataset.indexUrl || '/search-index.json');
+      if (!response.ok) throw new Error('Search index unavailable');
+      index = await response.json();
+      return index;
+    };
+    const close = () => { if (suggestions instanceof HTMLElement) { suggestions.hidden = true; suggestions.innerHTML = ''; } active = -1; };
+    const render = async () => {
+      if (!(search instanceof HTMLInputElement) || !(suggestions instanceof HTMLElement)) return;
+      const q = normalize(search.value); suggestions.innerHTML = ''; active = -1;
+      if (!q) { close(); return; }
+      try {
+        const items = await ensureIndex();
+        const ranked = items.map((item) => {
+          const name = normalize(item.name || ''), category = normalize(item.category || ''), haystack = normalize(item.search || `${item.name} ${item.category} ${item.description || ''}`);
+          let score = 99; if (name.startsWith(q)) score = 0; else if (name.includes(q)) score = 1; else if (category.startsWith(q)) score = 2; else if (category.includes(q)) score = 3; else if (haystack.includes(q)) score = 4;
+          return {item,score};
+        }).filter((entry)=>entry.score<99).sort((a,b)=>a.score-b.score||a.item.name.localeCompare(b.item.name)).slice(0,8);
+        if (!ranked.length) { const p=document.createElement('div');p.className='search-empty';p.textContent=root.dataset.emptyLabel||'No results';suggestions.append(p);suggestions.hidden=false;return; }
+        for (const {item} of ranked) {
+          const a=document.createElement('a');a.className='search-suggestion';a.href=item.url;
+          const marker=document.createElement('span');marker.className='search-suggestion-marker';marker.setAttribute('aria-hidden','true');
+          const main=document.createElement('span');main.className='search-suggestion-main';const name=document.createElement('strong');name.textContent=item.name;const category=document.createElement('small');category.textContent=item.category;main.append(name,category);
+          const arrow=document.createElement('span');arrow.className='search-suggestion-arrow';arrow.setAttribute('aria-hidden','true');arrow.textContent='↗';a.append(marker,main,arrow);suggestions.append(a);
+        }
+        suggestions.hidden=false;
+      } catch { const p=document.createElement('div');p.className='search-empty';p.textContent=root.dataset.emptyLabel||'No results';suggestions.append(p);suggestions.hidden=false; }
+    };
+    search?.addEventListener('input',render);
+    search?.addEventListener('focus',()=>{if(search instanceof HTMLInputElement&&search.value)render();else ensureIndex().catch(()=>null)});
+    search?.addEventListener('keydown',(event)=>{
+      if (!(suggestions instanceof HTMLElement)) return; const links=Array.from(suggestions.querySelectorAll('a'));
+      if(event.key==='Escape')close(); if(event.key==='ArrowDown'&&links.length){event.preventDefault();active=0;links[0]?.focus();} if(event.key==='Enter'&&links[0] instanceof HTMLAnchorElement){event.preventDefault();window.location.href=links[0].href;}
     });
-  });
+    suggestions?.addEventListener('keydown',(event)=>{if(!(event.target instanceof HTMLAnchorElement)||!(suggestions instanceof HTMLElement))return;const links=Array.from(suggestions.querySelectorAll('a'));const current=links.indexOf(event.target);if(event.key==='ArrowDown'){event.preventDefault();links[(current+1)%links.length]?.focus();}if(event.key==='ArrowUp'){event.preventDefault();if(current===0&&search instanceof HTMLInputElement)search.focus();else links[current-1]?.focus();}if(event.key==='Escape'){close();if(search instanceof HTMLInputElement)search.focus();}});
+    document.addEventListener('click',(event)=>{if(event.target instanceof Node&&!root.contains(event.target))close();});
+  }
 </script>

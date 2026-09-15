@@ -2,27 +2,25 @@
 import { getSimpleSpec } from '../engines/simple-registry.ts';
 import type { EngineId, LocaleId } from '../core/types.ts';
 import { ui } from '../i18n/ui.ts';
+import { interactions } from '../i18n/interactions.ts';
 import { localizeLabel } from '../i18n/content.ts';
-interface Props { toolId: string; engine: EngineId; locale: LocaleId; }
-const { toolId, engine, locale } = Astro.props;
+interface Props { toolId: string; engine: EngineId; locale: LocaleId; actionLabel?: string; }
+const { toolId, engine, locale, actionLabel } = Astro.props;
 const spec = getSimpleSpec(engine,toolId);
 if (!spec) throw new Error(`Missing ${engine} spec: ${toolId}`);
 const t = ui(locale);
+const ix = interactions(locale);
+const textual = spec.fields.some((field)=>field.type==='textarea');
 ---
-<div class="tool-shell" data-simple-tool data-tool-id={toolId} data-engine={engine} data-locale={locale}>
+<div class:list={["tool-shell","simple-tool-shell",textual && "workbench-shell"]} data-simple-tool data-tool-id={toolId} data-engine={engine} data-locale={locale} data-copy={t.copy} data-copied={t.copied}>
   <form data-form>
-    <div class="tool-grid">
-      {spec.fields.map((field)=><div class:list={["field", field.type === 'textarea' && 'full']}>
-        <label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label>
-        {field.type === 'select' ? <select id={`${toolId}-${field.key}`} name={field.key}>{field.options?.map((opt)=><option value={opt.value} selected={String(field.defaultValue??'')===opt.value}>{localizeLabel(locale,opt.label)}</option>)}</select>
-        : field.type === 'textarea' ? <textarea id={`${toolId}-${field.key}`} name={field.key} rows={field.rows??8} placeholder={field.placeholder}>{field.defaultValue}</textarea>
-        : <input id={`${toolId}-${field.key}`} name={field.key} type={field.type} value={field.defaultValue} placeholder={field.placeholder} min={field.min} max={field.max} step={field.type==='number'?(field.step??'any'):undefined} inputmode={field.type==='number'?'decimal':undefined} />}
-      </div>)}
+    <div class:list={["tool-grid", textual && 'tool-grid-textual']}>
+      {spec.fields.map((field)=><div class:list={["field", field.type === 'textarea' && 'full']}><div class="field-head"><label for={`${toolId}-${field.key}`}>{localizeLabel(locale,field.label)}</label>{field.type === 'textarea' && <button class="field-clear" type="button" data-clear-field={field.key}>{ix.clear}</button>}</div>{field.type === 'select' ? <select id={`${toolId}-${field.key}`} name={field.key}>{field.options?.map((opt)=><option value={opt.value} selected={String(field.defaultValue??'')===opt.value}>{localizeLabel(locale,opt.label)}</option>)}</select> : field.type === 'textarea' ? <textarea id={`${toolId}-${field.key}`} name={field.key} rows={field.rows??12} placeholder={field.placeholder} spellcheck="false">{field.defaultValue}</textarea> : <input id={`${toolId}-${field.key}`} name={field.key} type={field.type} value={field.defaultValue} placeholder={field.placeholder} min={field.min} max={field.max} step={field.type==='number'?(field.step??'any'):undefined} inputmode={field.type==='number'?'decimal':undefined} />}</div>)}
     </div>
-    <div class="actions"><button class="btn btn-primary" type="submit">{t.calculate}</button><button class="btn btn-secondary" type="reset">{t.reset}</button></div>
+    <div class="actions action-bar"><button class="btn btn-primary" type="submit">{actionLabel ?? t.calculate}</button><button class="btn btn-text" type="reset">{t.reset}</button></div>
   </form>
   <div class="error" data-error role="alert"></div>
-  <div class="results" data-results aria-live="polite"></div>
+  <section class="results-section" data-results-section hidden><div class="results-section-head"><span>{t.result}</span></div><div class="results" data-results aria-live="polite"></div></section>
 </div>
 <script>
   import { runSimpleTool } from '../engines/simple-registry.ts';
@@ -31,9 +29,11 @@ const t = ui(locale);
   document.querySelectorAll('[data-simple-tool]').forEach((root)=>{
     if(!(root instanceof HTMLElement)||root.dataset.bound==='1')return;root.dataset.bound='1';
     const toolId=root.dataset.toolId??'',engine=root.dataset.engine??'',locale=root.dataset.locale??'en';
-    const form=root.querySelector('[data-form]'),results=root.querySelector('[data-results]'),error=root.querySelector('[data-error]');
-    if(!(form instanceof HTMLFormElement)||!(results instanceof HTMLElement)||!(error instanceof HTMLElement))return;
-    form.addEventListener('submit',async(event)=>{event.preventDefault();try{const data=new FormData(form),values={};for(const [key,raw] of data.entries()){const input=form.elements.namedItem(key);values[key]=input instanceof HTMLInputElement&&input.type==='number'?parseLocaleNumber(String(raw),locale):String(raw)}const output=await runSimpleTool(engine,toolId,values);results.innerHTML='';for(const item of output){const card=document.createElement('div');card.className='result-card';if(item.color){card.style.borderInlineStart=`6px solid ${item.color}`;}const label=document.createElement('span');label.className='result-label';label.textContent=localizeLabel(locale as any,item.label);const value=item.multiline?document.createElement('pre'):document.createElement('strong');value.className='result-value';value.textContent=typeof item.value==='number'?`${formatNumber(item.value,locale)}${item.unit?` ${item.unit}`:''}`:`${item.value}${item.unit?` ${item.unit}`:''}`;if(item.multiline){value.style.whiteSpace='pre-wrap';value.style.fontFamily='ui-monospace, SFMono-Regular, Menlo, monospace';value.style.fontSize='.95rem';}card.append(label,value);results.append(card)}error.classList.remove('visible');results.classList.add('visible')}catch(cause){results.classList.remove('visible');error.textContent=cause instanceof Error?cause.message:'Tool error';error.classList.add('visible')}});
-    form.addEventListener('reset',()=>queueMicrotask(()=>{results.classList.remove('visible');error.classList.remove('visible')}));
+    const form=root.querySelector('[data-form]'),results=root.querySelector('[data-results]'),section=root.querySelector('[data-results-section]'),error=root.querySelector('[data-error]');
+    if(!(form instanceof HTMLFormElement)||!(results instanceof HTMLElement)||!(section instanceof HTMLElement)||!(error instanceof HTMLElement))return;
+    root.querySelectorAll('[data-clear-field]').forEach((button)=>button.addEventListener('click',()=>{if(!(button instanceof HTMLElement))return;const field=form.elements.namedItem(button.dataset.clearField??'');if(field instanceof HTMLTextAreaElement||field instanceof HTMLInputElement){field.value='';field.focus()}}));
+    const addCopy=(card,value)=>{const button=document.createElement('button');button.type='button';button.className='result-copy';button.textContent=root.dataset.copy||'Copy';button.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(value);button.textContent=root.dataset.copied||'Copied';setTimeout(()=>button.textContent=root.dataset.copy||'Copy',1200)}catch{}});card.append(button)};
+    form.addEventListener('submit',async(event)=>{event.preventDefault();try{const data=new FormData(form),values={};for(const [key,raw] of data.entries()){const input=form.elements.namedItem(key);values[key]=input instanceof HTMLInputElement&&input.type==='number'?parseLocaleNumber(String(raw),locale):String(raw)}const output=await runSimpleTool(engine,toolId,values);results.innerHTML='';for(const item of output){const card=document.createElement('div');card.className='result-card';if(item.color)card.style.borderInlineStart=`6px solid ${item.color}`;const label=document.createElement('span');label.className='result-label';label.textContent=localizeLabel(locale as any,item.label);const value=item.multiline?document.createElement('pre'):document.createElement('strong');value.className='result-value';value.textContent=typeof item.value==='number'?`${formatNumber(item.value,locale)}${item.unit?` ${item.unit}`:''}`:`${item.value}${item.unit?` ${item.unit}`:''}`;if(item.multiline)value.classList.add('result-code');card.append(label,value);addCopy(card,value.textContent||'');results.append(card)}error.classList.remove('visible');section.hidden=false;root.classList.add('has-results');window.dispatchEvent(new CustomEvent('utility:analytics',{detail:{event:'tool_completed',metadata:{toolId}}}))}catch(cause){section.hidden=true;root.classList.remove('has-results');error.textContent=cause instanceof Error?cause.message:'Tool error';error.classList.add('visible');window.dispatchEvent(new CustomEvent('utility:analytics',{detail:{event:'tool_error_code',metadata:{toolId}}}))}});
+    form.addEventListener('reset',()=>queueMicrotask(()=>{results.innerHTML='';section.hidden=true;root.classList.remove('has-results');error.classList.remove('visible')}));
   });
 </script>
