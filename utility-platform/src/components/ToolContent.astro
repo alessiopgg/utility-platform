@@ -34,7 +34,7 @@ const jsonLd = { '@context':'https://schema.org', '@type':'WebApplication', name
 
     <header class="tool-intro">
       <div class="tool-intro-main"><CategoryIcon slug={tool.categorySlug} size="md" /><div><span class="tool-category-label">{displayCategory}</span><h1>{displayName}</h1><p>{seo.description}</p></div></div>
-      {tool.localOnly && <div class="inline-trust"><span aria-hidden="true">âœ“</span><div><strong>{t.privacyLocal}</strong><small>{t.localDetail}</small></div></div>}
+      {tool.localOnly && <div class="inline-trust"><span aria-hidden="true">✓</span><div><strong>{t.privacyLocal}</strong><small>{t.localDetail}</small></div></div>}
     </header>
 
     <section class="workspace-section" aria-label={displayName}>
@@ -54,10 +54,10 @@ const jsonLd = { '@context':'https://schema.org', '@type':'WebApplication', name
 
     <section class="tool-information">
       <div class="tool-information-main"><span class="section-kicker">01</span><h2>{how.title}</h2><p>{how.body}</p></div>
-      {tool.localOnly && <aside class="privacy-note"><span class="privacy-note-icon" aria-hidden="true">âœ“</span><div><strong>{t.privacyLocal}</strong><p>{t.localDetail}</p></div></aside>}
+      {tool.localOnly && <aside class="privacy-note"><span class="privacy-note-icon" aria-hidden="true">✓</span><div><strong>{t.privacyLocal}</strong><p>{t.localDetail}</p></div></aside>}
     </section>
 
-    {related.length > 0 && <section class="related-section"><div class="related-heading"><span class="section-kicker">02</span><h2>{t.related}</h2></div><div class="related-tool-list">{related.map((item)=><a href={toolPath(locale,item)}><span>{toolName(locale,item)}</span><small>{categoryName(locale,item.category)}</small><span aria-hidden="true">â†’</span></a>)}</div></section>}
+    {related.length > 0 && <section class="related-section"><div class="related-heading"><span class="section-kicker">02</span><h2>{t.related}</h2></div><div class="related-tool-list">{related.map((item)=><a href={toolPath(locale,item)}><span>{toolName(locale,item)}</span><small>{categoryName(locale,item.category)}</small><span aria-hidden="true">→</span></a>)}</div></section>}
 
     <AdSlot label={t.ad} slot={ADSENSE_SLOT_SECONDARY} />
   </div>
