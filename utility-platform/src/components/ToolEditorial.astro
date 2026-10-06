@@ -1,0 +1,201 @@
+---
+import type { LocaleId, ToolDefinition } from '../core/types.ts';
+import type { ToolEditorial } from '../i18n/tool-editorial.ts';
+import { toolPath } from '../core/routes.ts';
+import { toolName } from '../i18n/content.ts';
+
+interface Props {
+  locale: LocaleId;
+  editorial: ToolEditorial;
+  nextTools: ToolDefinition[];
+  localOnly: boolean;
+}
+
+const { locale, editorial, nextTools, localOnly } = Astro.props;
+
+const nextConfig = editorial.next ?? [];
+
+const nextItems = nextTools
+  .map((tool) => ({
+    tool,
+    copy: nextConfig.find((item) => item.toolId === tool.id)
+  }))
+  .filter((item) => item.copy);
+---
+
+<article class="tool-editorial-v2">
+
+  <section class="editorial-showcase">
+    <div class="editorial-showcase-copy">
+      <span class="editorial-eyebrow">{editorial.kicker}</span>
+      <h2>{editorial.title}</h2>
+      <p>{editorial.intro}</p>
+
+      {editorial.facts?.length > 0 && (
+        <div class="editorial-facts">
+          {editorial.facts.map((fact) => <span>{fact}</span>)}
+        </div>
+      )}
+    </div>
+
+    {editorial.visual?.kind === 'merge-pdf' && (
+      <div class="merge-explainer" aria-label={editorial.visual.caption}>
+        <div class="merge-doc-group">
+          <small>{editorial.visual.sourceA}</small>
+          <div class="mini-document"><span>1</span><span>2</span></div>
+        </div>
+        <span class="merge-symbol">+</span>
+        <div class="merge-doc-group">
+          <small>{editorial.visual.sourceB}</small>
+          <div class="mini-document"><span>3</span><span>4</span></div>
+        </div>
+        <span class="merge-arrow">→</span>
+        <div class="merge-doc-group merge-result">
+          <small>{editorial.visual.result}</small>
+          <div class="mini-document result-document">
+            <span>1</span><span>2</span><span>3</span><span>4</span>
+          </div>
+        </div>
+        <p>{editorial.visual.caption}</p>
+      </div>
+    )}
+
+    {editorial.visual?.kind === 'compress-pdf' && (
+      <div class="compress-explainer">
+        <div class="compress-node">
+          <span class="compress-file">PDF</span>
+          <strong>{editorial.visual.input}</strong>
+        </div>
+        <span class="compress-arrow">→</span>
+        <div class="compress-node compress-process">
+          <div class="compress-bars"><i></i><i></i><i></i></div>
+          <strong>{editorial.visual.process}</strong>
+        </div>
+        <span class="compress-arrow">→</span>
+        <div class="compress-node">
+          <span class="compress-file compress-file-small">PDF</span>
+          <strong>{editorial.visual.output}</strong>
+        </div>
+        <p>{editorial.visual.caption}</p>
+      </div>
+    )}
+
+    {editorial.visual?.kind === 'percentage' && (
+      <div class="percentage-explainer">
+        <div class="percentage-equation">
+          <div><small>Percentage</small><strong>{editorial.visual.percentage}</strong></div>
+          <span>of</span>
+          <div><small>Value</small><strong>{editorial.visual.value}</strong></div>
+          <span>=</span>
+          <div class="percentage-result"><small>Result</small><strong>{editorial.visual.result}</strong></div>
+        </div>
+        <code>{editorial.visual.formula}</code>
+        <p>{editorial.visual.caption}</p>
+      </div>
+    )}
+
+    {editorial.visual?.kind === 'flow' && (
+      <div class="flow-explainer">
+        <div class="flow-track">
+          {editorial.visual.nodes.map((node, index) => (
+            <div class="flow-segment">
+              <div class="flow-node">
+                <span>{String(index + 1).padStart(2, '0')}</span>
+                <strong>{node}</strong>
+              </div>
+
+              {index < editorial.visual!.nodes.length - 1 && (
+                <span class="flow-arrow" aria-hidden="true">→</span>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <p>{editorial.visual.caption}</p>
+      </div>
+    )}
+  </section>
+
+  {editorial.stepsTitle && editorial.steps?.length && (
+    <section class="editorial-process">
+      <div class="editorial-section-heading">
+        <span>01</span>
+        <h2>{editorial.stepsTitle}</h2>
+      </div>
+
+      <ol class="editorial-step-grid">
+        {editorial.steps.map((step, index) => (
+          <li>
+            <span>{String(index + 1).padStart(2, '0')}</span>
+            <p>{step}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
+
+  {(editorial.insightTitle || (localOnly && editorial.privacyTitle)) && (
+    <section class="editorial-highlight-grid">
+
+      {editorial.insightTitle && (
+        <article class="editorial-highlight insight">
+          <span class="editorial-eyebrow">{editorial.insightLabel}</span>
+          <h3>{editorial.insightTitle}</h3>
+          <p>{editorial.insightBody}</p>
+        </article>
+      )}
+
+      {localOnly && editorial.privacyTitle && (
+        <article class="editorial-highlight privacy">
+          <span class="editorial-eyebrow">{editorial.privacyLabel}</span>
+          <h3>{editorial.privacyTitle}</h3>
+          <p>{editorial.privacyBody}</p>
+        </article>
+      )}
+
+    </section>
+  )}
+
+  {editorial.faqTitle && editorial.faq?.length && (
+    <section class="editorial-faq-v2">
+      <div class="editorial-section-heading">
+        <span>02</span>
+        <h2>{editorial.faqTitle}</h2>
+      </div>
+
+      <div class="editorial-faq-v2-list">
+        {editorial.faq.map((item) => (
+          <details>
+            <summary>
+              <span>{item.question}</span>
+              <span aria-hidden="true">+</span>
+            </summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {editorial.nextTitle && nextItems.length > 0 && (
+    <section class="editorial-next">
+      <div class="editorial-section-heading">
+        <span>03</span>
+        <h2>{editorial.nextTitle}</h2>
+      </div>
+
+      <div class="editorial-next-grid">
+        {nextItems.map(({ tool, copy }) => (
+          <a href={toolPath(locale, tool)}>
+            <div>
+              <strong>{toolName(locale, tool)}</strong>
+              <p>{copy?.description}</p>
+            </div>
+            <span aria-hidden="true">→</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+
+</article>

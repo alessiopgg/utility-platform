@@ -6,3 +6,8 @@ dist/
 !.env.example
 .DS_Store
 coverage/
+*.bak
+*.old
+*.backup
+qa-pdfs-*/
+public/vendor/

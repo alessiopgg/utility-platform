@@ -1,4 +1,4 @@
-﻿---
+---
 import { ADSENSE_CLIENT, ADSENSE_SLOT } from '../core/site.ts';
 
 interface Props {
@@ -9,7 +9,7 @@ interface Props {
 const { label, slot = ADSENSE_SLOT } = Astro.props;
 const enabled = Boolean(ADSENSE_CLIENT && slot);
 ---
-{enabled ? (
+{enabled && (
   <div class="ad-slot ad-slot-live" aria-label={label}>
     <ins
       class="adsbygoogle"
@@ -21,6 +21,4 @@ const enabled = Boolean(ADSENSE_CLIENT && slot);
     ></ins>
     <script is:inline>try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch{}</script>
   </div>
-) : (
-  <div class="ad-slot" aria-label={label} data-ad-disabled>{label}</div>
 )}

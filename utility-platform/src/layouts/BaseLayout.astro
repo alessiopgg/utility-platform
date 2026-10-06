@@ -1,4 +1,4 @@
----
+﻿---
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import BrandMark from '../components/BrandMark.astro';
@@ -15,12 +15,13 @@ interface Props {
   canonicalPath: string;
   localePaths?: Partial<Record<LocaleId,string>>;
   noindex?: boolean;
+  enableAds?: boolean;
 }
-const { locale, title, description, canonicalPath, localePaths, noindex=false } = Astro.props;
+const { locale, title, description, canonicalPath, localePaths, noindex=false, enableAds=false } = Astro.props;
 const meta = localeMeta[locale];
 const t = ui(locale);
 const legalCopy = legal(locale);
-const site = Astro.site ?? new URL('https://example.com');
+const site = Astro.site ?? new URL('https://utilitylake.com');
 const canonical = new URL(canonicalPath, site);
 const paths = localePaths ?? Object.fromEntries(locales.map((id)=>[id,homePath(id)]));
 const legalPath = (kind:string) => `${localePrefix(locale)}/${kind}/`.replace('//','/');
@@ -43,7 +44,7 @@ const legalPath = (kind:string) => `${localePrefix(locale)}/${kind}/`.replace('/
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:type" content="website" />
-    {ADSENSE_CLIENT && <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`} crossorigin="anonymous"></script>}
+    {enableAds && ADSENSE_CLIENT && <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`} crossorigin="anonymous"></script>}
     {PLAUSIBLE_DOMAIN && <script defer data-domain={PLAUSIBLE_DOMAIN} src="https://plausible.io/js/script.js"></script>}
     <title>{title}</title>
   </head>
@@ -53,7 +54,7 @@ const legalPath = (kind:string) => `${localePrefix(locale)}/${kind}/`.replace('/
     <footer class="site-footer">
       <div class="container footer-grid">
         <div class="footer-brand">
-          <a class="brand footer-brand-link" href={homePath(locale)} aria-label={`${SITE_NAME} — ${t.home}`}><BrandMark /><span class="brand-copy"><strong>{SITE_NAME}</strong><small>{t.tagline}</small></span></a>
+          <a class="brand footer-brand-link" href={homePath(locale)} aria-label={`${SITE_NAME} - ${t.home}`}><BrandMark /><span class="brand-copy"><strong>{SITE_NAME}</strong><small>{t.tagline}</small></span></a>
         </div>
         <nav class="footer-links" aria-label={t.tools}>
           <a href={legalPath('about')}>{legalCopy.about}</a>
@@ -61,7 +62,7 @@ const legalPath = (kind:string) => `${localePrefix(locale)}/${kind}/`.replace('/
           <a href={legalPath('terms')}>{legalCopy.terms}</a>
           <a href={legalPath('contact')}>{legalCopy.contact}</a>
         </nav>
-        <p class="footer-meta">© {new Date().getFullYear()} {SITE_NAME}</p>
+        <p class="footer-meta">&#169; {new Date().getFullYear()} {SITE_NAME}</p>
       </div>
     </footer>
     {PLAUSIBLE_DOMAIN && <script is:inline>
@@ -73,3 +74,4 @@ const legalPath = (kind:string) => `${localePrefix(locale)}/${kind}/`.replace('/
     </script>}
   </body>
 </html>
+

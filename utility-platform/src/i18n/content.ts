@@ -98,10 +98,158 @@ function replaceWords(locale:LocaleId,input:string):string {
   return out;
 }
 
+
+const italianToolNameOverrides: Record<string,string> = {
+  'Percentage Calculator':'Calcolatore percentuale',
+  'Margin Calculator':'Calcolatore del margine',
+  'Concrete Calculator':'Calcolatore del calcestruzzo',
+  'DPI Calculator':'Calcolatore DPI',
+  'Word Counter':'Contatore di parole',
+  'JSON Formatter':'Formattatore JSON',
+  'SHA-256 Generator':'Generatore SHA-256',
+  'Random Team Generator':'Generatore di squadre casuali',
+  'Color Contrast Checker':'Verificatore del contrasto colori',
+  'Compress Image':'Comprimi immagine',
+  'Favicon Generator':'Generatore di favicon',
+  'QR With Logo':'QR con logo',
+  'Compress PDF':'Comprimi PDF',
+  'Video Speed Changer':'Modifica velocità video',
+  'STL Volume Calculator':'Calcolatore del volume STL',
+  'Temperature Converter':'Convertitore di temperatura'
+};
+
+
+const italianToolNameOverridesQA: Record<string,string> = {
+  'Delete PDF Pages':'Elimina pagine PDF',
+  'Reorder PDF Pages':'Riordina pagine PDF',
+  'Percentage Increase Calculator':'Calcolatore aumento percentuale',
+  'Percentage Decrease Calculator':'Calcolatore diminuzione percentuale',
+  'Percentage Difference Calculator':'Calcolatore differenza percentuale',
+  'Reverse Percentage Calculator':'Calcolatore percentuale inversa',
+  'Average Calculator':'Calcolatore della media',
+  'Weighted Average Calculator':'Calcolatore della media ponderata',
+  'Rounding Calculator':'Calcolatore di arrotondamento',
+  'Absolute Difference Calculator':'Calcolatore differenza assoluta',
+
+  'Markup Calculator':'Calcolatore del markup',
+  'Growth Rate Calculator':'Calcolatore del tasso di crescita',
+  'Loan Payment Calculator':'Calcolatore rata del prestito',
+  'Savings Goal Calculator':'Calcolatore obiettivo di risparmio',
+  'Discount Calculator':'Calcolatore sconto',
+  'Revenue Calculator':'Calcolatore ricavi',
+  'Profit Margin Calculator':'Calcolatore margine di profitto',
+
+  'Pool Volume Calculator':'Calcolatore volume piscina',
+  'Pond Volume Calculator':'Calcolatore volume laghetto',
+
+  'Video Bitrate Calculator':'Calcolatore bitrate video',
+  'Video File Size Calculator':'Calcolatore dimensione file video',
+  'Audio File Size Calculator':'Calcolatore dimensione file audio',
+
+  'Sentence Counter':'Contatore di frasi',
+  'Paragraph Counter':'Contatore di paragrafi',
+  'Sentence Case Converter':'Convertitore in formato frase',
+  'Remove Duplicate Lines':'Rimuovi righe duplicate',
+  'Reverse Text':'Inverti testo',
+  'Reverse Lines':'Inverti righe',
+  'Word Frequency Counter':'Contatore frequenza parole',
+  'Unique Word Counter':'Contatore parole uniche',
+  'Duplicate Word Finder':'Trova parole duplicate',
+
+  'JSON Sorter':'Ordinatore JSON',
+  'Cron Expression Parser':'Parser espressioni Cron',
+  'URL Parser':'Parser URL',
+  'Query String Parser':'Parser query string',
+  'HTTP Header Parser':'Parser header HTTP',
+
+  'Random Wheel':'Ruota casuale',
+  'Random Group Generator':'Generatore di gruppi casuali',
+  'Decision Wheel':'Ruota decisionale',
+
+  'WCAG Contrast Calculator':'Calcolatore contrasto WCAG',
+  'Image Average Color':'Colore medio immagine',
+  'Image File Size Estimator':'Stimatore dimensione file immagine',
+  'Profile Picture Cropper':'Ritaglio immagine profilo',
+
+  'Schema Markup Generator':'Generatore markup Schema',
+  'QR Reader From Image':'Lettore QR da immagine',
+
+  'Audio Trimmer':'Ritaglia audio',
+  'Audio Cutter':'Taglia audio',
+  'Audio Joiner':'Unisci audio',
+  'Change Audio Volume':'Modifica volume audio',
+  'Extract Audio From Video':'Estrai audio dal video',
+  'Video Trimmer':'Ritaglia durata video',
+  'Video Cropper':'Ritaglia area video',
+  'Video Rotator':'Ruota video',
+  'Mute Video':'Rimuovi audio dal video',
+  'Video Speed Changer':'Modifica velocità video',
+  'Audio Bitrate Converter':'Convertitore bitrate audio',
+  'Video Bitrate Converter':'Convertitore bitrate video',
+  'Subtitle Merger':'Unisci sottotitoli',
+
+  'STL Volume Calculator':'Calcolatore volume STL',
+  'Resin Volume Calculator':'Calcolatore volume resina',
+  'Layer Height Calculator':'Calcolatore altezza layer',
+
+  'Volume Converter':'Convertitore di volume',
+  'Frequency Converter':'Convertitore di frequenza'
+};
+
+const italianLabelOverrides: Record<string,string> = {
+  'PDF file':'File PDF',
+  'PDF files':'File PDF',
+  'Revenue':'Ricavi',
+  'Cost':'Costo',
+  'Names':'Nomi',
+  'Number of teams':'Numero di squadre',
+  'Items':'Elementi',
+  'Participants':'Partecipanti',
+  'Foreground':'Primo piano',
+  'Background':'Sfondo',
+  'Output format':'Formato di output',
+  'Quality %':'Qualità %',
+  'Media file':'File multimediale',
+  'Media File':'File multimediale',
+  'Image':'Immagine',
+  'Images':'Immagini',
+  'Width':'Larghezza',
+  'Height':'Altezza',
+  'Width (px)':'Larghezza (px)',
+  'Height (px)':'Altezza (px)',
+  'Start':'Inizio',
+  'End':'Fine',
+  'Start (seconds)':'Inizio (secondi)',
+  'Duration (seconds)':'Durata (secondi)',
+  'Duration':'Durata',
+  'Angle':'Angolo',
+  'Speed':'Velocità',
+  'Count':'Quantità',
+  'Color':'Colore',
+  'Base color':'Colore base',
+  'Start color':'Colore iniziale',
+  'End color':'Colore finale',
+  'Format':'Formato',
+  'File size':'Dimensione file',
+  'Original size':'Dimensione originale',
+  'Compressed size':'Dimensione compressa',
+  'Number of dice':'Numero di dadi',
+  'Sides per die':'Facce per dado',
+  'Minimum':'Minimo',
+  'Maximum':'Massimo',
+  'Random number':'Numero casuale',
+  'Random order':'Ordine casuale',
+  'Bar width':'Larghezza barre',
+  'Bar color':'Colore barre',
+  'Volume multiplier':'Moltiplicatore volume',
+  'Bitrate (kbps)':'Bitrate (kbps)',
+  'Video bitrate (kbps)':'Bitrate video (kbps)'
+};
+
 export function categoryName(locale:LocaleId, english:string):string { return categories[english]?.[locale] ?? english; }
 
 export function toolName(locale:LocaleId, tool:Pick<ToolDefinition,'name'>|string):string {
-  const name=typeof tool==='string'?tool:tool.name;if(locale==='en')return name;
+  const name=typeof tool==='string'?tool:tool.name;if(locale==='en')return name;if(locale==='it'){const override=italianToolNameOverridesQA[name]??italianToolNameOverrides[name];if(override)return override;}
   const conversion=name.match(/^(.+?)\s+to\s+(.+?)(?:\s+Converter)?$/i);
   if(conversion){const a=replaceWords(locale,conversion[1]!),b=replaceWords(locale,conversion[2]!);const forms:L={en:`${a} to ${b} Converter`,es:`Convertidor de ${a} a ${b}`,'pt-BR':`Conversor de ${a} para ${b}`,de:`${a}-zu-${b}-Konverter`,fr:`Convertisseur ${a} vers ${b}`,it:`Convertitore da ${a} a ${b}`,ja:`${a}→${b} コンバーター`,ar:`محول ${a} إلى ${b}`,id:`Konverter ${a} ke ${b}`,tr:`${a} - ${b} Dönüştürücü`,pl:`Konwerter ${a} na ${b}`,ko:`${a} → ${b} 변환기`,nl:`${a} naar ${b} converter`,vi:`Bộ chuyển đổi ${a} sang ${b}`};return forms[locale];}
   for(const [type,map] of Object.entries(types)) if(name.endsWith(` ${type}`)){const subject=replaceWords(locale,name.slice(0,-type.length-1)),kind=map[locale];if(noSpaceLocales.has(locale))return `${subject}${kind}`;if(prefixLocales.has(locale)){const c=connector[locale];return `${kind}${c?` ${c}`:''} ${subject}`;}return `${subject} ${kind}`;}
@@ -109,13 +257,28 @@ export function toolName(locale:LocaleId, tool:Pick<ToolDefinition,'name'>|strin
 }
 
 const seoSuffix:L={en:'Free Online Tool',es:'Herramienta online gratis','pt-BR':'Ferramenta online grátis',de:'Kostenloses Online-Tool',fr:'Outil en ligne gratuit',it:'Strumento online gratuito',ja:'無料オンラインツール',ar:'أداة مجانية عبر الإنترنت',id:'Alat online gratis',tr:'Ücretsiz çevrimiçi araç',pl:'Darmowe narzędzie online',ko:'무료 온라인 도구',nl:'Gratis online tool',vi:'Công cụ trực tuyến miễn phí'};
-const descTemplate:L={en:'Use {name} free in your browser. Fast, simple and privacy-first; supported files are processed locally.',es:'Usa {name} gratis en tu navegador. Rápido, sencillo y centrado en la privacidad; los archivos compatibles se procesan localmente.','pt-BR':'Use {name} grátis no navegador. Rápido, simples e focado em privacidade; arquivos compatíveis são processados localmente.',de:'Nutze {name} kostenlos im Browser. Schnell, einfach und datenschutzfreundlich; unterstützte Dateien werden lokal verarbeitet.',fr:'Utilisez {name} gratuitement dans votre navigateur. Rapide, simple et respectueux de la vie privée; les fichiers pris en charge sont traités localement.',it:'Usa {name} gratis nel browser. Veloce, semplice e orientato alla privacy; i file supportati vengono elaborati in locale.',ja:'{name}をブラウザで無料利用。高速・シンプル・プライバシー重視で、対応ファイルは端末内で処理されます。',ar:'استخدم {name} مجانًا في متصفحك. سريع وبسيط ويركز على الخصوصية؛ تتم معالجة الملفات المدعومة محليًا.',id:'Gunakan {name} gratis di browser. Cepat, sederhana, dan mengutamakan privasi; file yang didukung diproses secara lokal.',tr:'{name} aracını tarayıcınızda ücretsiz kullanın. Hızlı, basit ve gizlilik odaklıdır; desteklenen dosyalar yerel olarak işlenir.',pl:'Korzystaj z {name} bezpłatnie w przeglądarce. Szybko, prosto i z myślą o prywatności; obsługiwane pliki są przetwarzane lokalnie.',ko:'{name}을(를) 브라우저에서 무료로 사용하세요. 빠르고 간단하며 개인정보 보호를 우선하고, 지원 파일은 로컬에서 처리됩니다.',nl:'Gebruik {name} gratis in je browser. Snel, eenvoudig en privacygericht; ondersteunde bestanden worden lokaal verwerkt.',vi:'Dùng {name} miễn phí ngay trong trình duyệt. Nhanh, đơn giản, ưu tiên quyền riêng tư; tệp được hỗ trợ được xử lý cục bộ.'};
+const descTemplate:L={
+  en:'Use {name} free in your browser. No account required; your input is processed locally in your browser.',
+  es:'Usa {name} gratis en tu navegador. No necesitas una cuenta; tus datos se procesan localmente en el navegador.',
+  'pt-BR':'Use {name} grátis no navegador. Não é preciso criar conta; seus dados são processados localmente no navegador.',
+  de:'Nutze {name} kostenlos im Browser. Kein Konto erforderlich; deine Eingaben werden lokal im Browser verarbeitet.',
+  fr:'Utilisez {name} gratuitement dans votre navigateur. Aucun compte requis; vos données sont traitées localement dans le navigateur.',
+  it:'Usa {name} gratis nel browser. Non serve un account; i dati inseriti vengono elaborati localmente nel browser.',
+  ja:'{name}をブラウザで無料利用。アカウントは不要で、入力データはブラウザ内でローカル処理されます。',
+  ar:'استخدم {name} مجانًا في متصفحك. لا يلزم حساب؛ تتم معالجة بيانات الإدخال محليًا داخل المتصفح.',
+  id:'Gunakan {name} gratis di browser. Tidak perlu akun; data yang dimasukkan diproses secara lokal di browser.',
+  tr:'{name} aracını tarayıcınızda ücretsiz kullanın. Hesap gerekmez; girdiğiniz veriler tarayıcıda yerel olarak işlenir.',
+  pl:'Korzystaj z {name} bezpłatnie w przeglądarce. Konto nie jest wymagane; wprowadzone dane są przetwarzane lokalnie w przeglądarce.',
+  ko:'{name}을(를) 브라우저에서 무료로 사용하세요. 계정이 필요하지 않으며 입력 데이터는 브라우저에서 로컬로 처리됩니다.',
+  nl:'Gebruik {name} gratis in je browser. Geen account nodig; je invoer wordt lokaal in de browser verwerkt.',
+  vi:'Dùng {name} miễn phí ngay trong trình duyệt. Không cần tài khoản; dữ liệu nhập vào được xử lý cục bộ trong trình duyệt.'
+};
 const howTitle:L={en:'How it works',es:'Cómo funciona','pt-BR':'Como funciona',de:'So funktioniert es',fr:'Comment ça marche',it:'Come funziona',ja:'使い方',ar:'كيف يعمل',id:'Cara kerja',tr:'Nasıl çalışır',pl:'Jak to działa',ko:'사용 방법',nl:'Hoe het werkt',vi:'Cách hoạt động'};
 const howBody:L={en:'Enter or upload the requested input, run the tool and review the result immediately. No account is required, and file tools process data in your browser whenever supported.',es:'Introduce o sube los datos solicitados, ejecuta la herramienta y revisa el resultado al instante. No necesitas una cuenta y las herramientas de archivos procesan los datos en tu navegador.', 'pt-BR':'Insira ou envie os dados solicitados, execute a ferramenta e veja o resultado imediatamente. Não é preciso criar conta e as ferramentas de arquivo processam os dados no navegador.',de:'Gib die gewünschten Daten ein oder lade eine Datei hoch, starte das Tool und sieh das Ergebnis sofort. Kein Konto nötig; Dateiwerkzeuge verarbeiten Daten im Browser.',fr:'Saisissez ou importez les données demandées, lancez l’outil et consultez immédiatement le résultat. Aucun compte requis; les outils de fichiers traitent les données dans le navigateur.',it:'Inserisci o carica i dati richiesti, avvia lo strumento e visualizza subito il risultato. Non serve un account e gli strumenti per file elaborano i dati nel browser.',ja:'必要な値を入力またはファイルをアップロードし、ツールを実行すると結果をすぐ確認できます。アカウントは不要で、対応するファイル処理はブラウザ内で行われます。',ar:'أدخل البيانات المطلوبة أو ارفع الملف ثم شغّل الأداة واعرض النتيجة فورًا. لا يلزم حساب، وتتم معالجة الملفات المدعومة داخل المتصفح.',id:'Masukkan atau unggah data yang diminta, jalankan alat, lalu lihat hasilnya seketika. Tidak perlu akun dan alat file memproses data di browser.',tr:'İstenen veriyi girin veya dosyayı yükleyin, aracı çalıştırın ve sonucu hemen görüntüleyin. Hesap gerekmez; dosya araçları veriyi tarayıcıda işler.',pl:'Wprowadź lub prześlij wymagane dane, uruchom narzędzie i od razu sprawdź wynik. Konto nie jest potrzebne, a narzędzia plikowe przetwarzają dane w przeglądarce.',ko:'필요한 값을 입력하거나 파일을 업로드한 뒤 도구를 실행하면 결과를 즉시 확인할 수 있습니다. 계정은 필요 없으며 지원되는 파일 처리는 브라우저에서 수행됩니다.',nl:'Voer de gevraagde gegevens in of upload een bestand, start de tool en bekijk direct het resultaat. Geen account nodig; bestandstools verwerken gegevens in je browser.',vi:'Nhập hoặc tải lên dữ liệu cần thiết, chạy công cụ và xem kết quả ngay. Không cần tài khoản; các công cụ tệp xử lý dữ liệu trong trình duyệt.'};
 
 export function toolSeoCopy(locale:LocaleId,tool:ToolDefinition){const name=toolName(locale,tool);return{displayName:name,title:`${name} — ${seoSuffix[locale]}`,description:descTemplate[locale].replace('{name}',name)};}
 export function howItWorks(locale:LocaleId){return{title:howTitle[locale],body:howBody[locale]};}
-export function localizeLabel(locale:LocaleId,label:string):string{return replaceWords(locale,label);}
+export function localizeLabel(locale:LocaleId,label:string):string{if(locale==='it'&&italianLabelOverrides[label])return italianLabelOverrides[label]!;return replaceWords(locale,label);}
 export function categoryDescription(locale:LocaleId,name:string,count:number){const n=categoryName(locale,name);const templates:L={en:`${count} free ${n.toLowerCase()} that run in your browser.`,es:`${count} herramientas gratuitas de ${n.toLowerCase()} que funcionan en tu navegador.`,'pt-BR':`${count} ferramentas grátis de ${n.toLowerCase()} que funcionam no navegador.`,de:`${count} kostenlose ${n}, die direkt im Browser laufen.`,fr:`${count} outils gratuits — ${n.toLowerCase()} — dans votre navigateur.`,it:`${count} strumenti gratuiti di ${n.toLowerCase()} che funzionano nel browser.`,ja:`ブラウザで使える無料の${n}を${count}個収録。`,ar:`${count} أداة مجانية ضمن ${n} تعمل في متصفحك.`,id:`${count} ${n} gratis yang berjalan di browser.`,tr:`Tarayıcıda çalışan ${count} ücretsiz ${n}.`,pl:`${count} darmowych narzędzi: ${n}, działających w przeglądarce.`,ko:`브라우저에서 실행되는 무료 ${n} ${count}개.`,nl:`${count} gratis ${n} die in je browser werken.`,vi:`${count} ${n} miễn phí chạy trong trình duyệt.`};return templates[locale];}
 const homeIntroText:L={en:'{count} free tools ready to use, organized into focused categories. File processing stays in your browser whenever the tool supports local execution.',es:'{count} herramientas gratuitas listas para usar, organizadas por categorías. El procesamiento de archivos permanece en tu navegador cuando la herramienta admite ejecución local.','pt-BR':'{count} ferramentas grátis prontas para usar, organizadas por categorias. O processamento de arquivos fica no navegador sempre que a ferramenta oferece execução local.',de:'{count} kostenlose Tools, übersichtlich nach Kategorien organisiert. Dateiverarbeitung bleibt im Browser, wenn das Tool lokale Verarbeitung unterstützt.',fr:'{count} outils gratuits prêts à l’emploi, organisés par catégories. Le traitement des fichiers reste dans votre navigateur lorsque l’outil fonctionne localement.',it:'{count} strumenti gratuiti pronti all’uso, organizzati per categorie. L’elaborazione dei file resta nel browser quando lo strumento supporta l’esecuzione locale.',ja:'すぐ使える無料ツールを{count}個、カテゴリ別に収録。対応するファイル処理はブラウザ内で完結します。',ar:'{count} أداة مجانية جاهزة للاستخدام ومنظمة حسب الفئات. تبقى معالجة الملفات داخل متصفحك عندما تدعم الأداة التنفيذ المحلي.',id:'{count} alat gratis siap digunakan dan tersusun dalam kategori. Pemrosesan file tetap di browser saat alat mendukung eksekusi lokal.',tr:'Kategorilere ayrılmış, kullanıma hazır {count} ücretsiz araç. Yerel çalışmayı destekleyen dosya araçlarında veriler tarayıcınızda kalır.',pl:'{count} darmowych narzędzi gotowych do użycia, uporządkowanych według kategorii. Obsługiwane pliki są przetwarzane lokalnie w przeglądarce.',ko:'카테고리별로 정리된 무료 도구 {count}개를 바로 사용할 수 있습니다. 지원되는 파일 처리는 브라우저에서 로컬로 수행됩니다.',nl:'{count} gratis tools klaar voor gebruik, geordend per categorie. Bestandsverwerking blijft in je browser wanneer lokale uitvoering wordt ondersteund.',vi:'{count} công cụ miễn phí sẵn sàng sử dụng, được sắp xếp theo danh mục. Việc xử lý tệp diễn ra trong trình duyệt khi công cụ hỗ trợ xử lý cục bộ.'};
 const entriesText:L={en:'{count} tools',es:'{count} herramientas','pt-BR':'{count} ferramentas',de:'{count} Tools',fr:'{count} outils',it:'{count} strumenti',ja:'{count}ツール',ar:'{count} أداة',id:'{count} alat',tr:'{count} araç',pl:'{count} narzędzi',ko:'도구 {count}개',nl:'{count} tools',vi:'{count} công cụ'};
