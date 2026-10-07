@@ -1,4 +1,16 @@
 import type { LocaleId } from '../core/types.ts';
+import { editorialRest8 } from './editorial-rest8.ts';
+import { completionEditorialEs, completionEditorialPtBr, completionEditorialDe, completionEditorialFr } from './editorial-completion-4locales.ts';
+import { fastEncodingEs, fastEncodingPtBr, fastEncodingDe, fastEncodingFr, fastUnitsEs, fastUnitsPtBr, fastUnitsDe, fastUnitsFr, fastTextEs, fastTextPtBr, fastTextDe, fastTextFr, fastMakerEs, fastMakerPtBr, fastMakerDe, fastMakerFr } from './editorial-fastpack-4locales.ts';
+import { calculatorPhotoEditorialEs, calculatorPhotoEditorialPtBr, calculatorPhotoEditorialDe, calculatorPhotoEditorialFr } from './editorial-calculator-photo-4locales.ts';
+import { calculatorConstructionEditorialEs, calculatorConstructionEditorialPtBr, calculatorConstructionEditorialDe, calculatorConstructionEditorialFr } from './editorial-calculator-construction-4locales.ts';
+import { calculatorBusinessEditorialEs, calculatorBusinessEditorialPtBr, calculatorBusinessEditorialDe, calculatorBusinessEditorialFr } from './editorial-calculator-business-4locales.ts';
+import { calculatorMathEditorialDe, calculatorMathEditorialFr } from './editorial-calculator-math-de-fr.ts';
+import { calculatorMathEditorialEs, calculatorMathEditorialPtBr } from './editorial-calculator-math-es-ptbr.ts';
+import { pdfEditorialDe, pdfEditorialFr } from './editorial-pdf-de-fr.ts';
+import { pdfEditorialPtBr } from './editorial-pdf-ptbr.ts';
+import { pdfEditorialEs } from './editorial-pdf-es.ts';
+import { translateToolEditorial } from './editorial-translations.ts';
 import { pdfEditorialBatch } from './editorial-pdf-batch.ts';
 import { structuredEditorialBatch } from './editorial-structured-batch.ts';
 import { calculatorMathEditorialBatch } from './editorial-calculator-math-batch.ts';
@@ -523,7 +535,150 @@ const content: Partial<Record<string, Partial<Record<LocaleId, ToolEditorial>>>>
 };
 
 export function toolEditorial(locale: LocaleId, toolId: string): ToolEditorial | null {
-  return content[toolId]?.[locale] ?? null;
+  const direct = content[toolId]?.[locale];
+
+  if (direct) return direct;
+
+  if (locale === 'es') {
+    const spanishPdf = pdfEditorialEs[toolId];
+    if (spanishPdf) return spanishPdf;
+
+    const spanishMath = calculatorMathEditorialEs[toolId];
+    if (spanishMath) return spanishMath;
+
+    const spanishBusiness = calculatorBusinessEditorialEs[toolId];
+    if (spanishBusiness) return spanishBusiness;
+
+    const spanishConstruction = calculatorConstructionEditorialEs[toolId];
+    if (spanishConstruction) return spanishConstruction;
+
+    const spanishPhoto = calculatorPhotoEditorialEs[toolId];
+    if (spanishPhoto) return spanishPhoto;
+
+    const spanishEncoding = fastEncodingEs[toolId];
+    if (spanishEncoding) return spanishEncoding;
+
+    const spanishUnits = fastUnitsEs[toolId];
+    if (spanishUnits) return spanishUnits;
+
+    const spanishText = fastTextEs[toolId];
+    if (spanishText) return spanishText;
+
+    const spanishMaker = fastMakerEs[toolId];
+    if (spanishMaker) return spanishMaker;
+
+    const spanishCompletion = completionEditorialEs[toolId];
+    if (spanishCompletion) return spanishCompletion;
+  }
+
+  if (locale === 'pt-BR') {
+    const portuguesePdf = pdfEditorialPtBr[toolId];
+    if (portuguesePdf) return portuguesePdf;
+
+    const portugueseMath = calculatorMathEditorialPtBr[toolId];
+    if (portugueseMath) return portugueseMath;
+
+    const portugueseBusiness = calculatorBusinessEditorialPtBr[toolId];
+    if (portugueseBusiness) return portugueseBusiness;
+
+    const portugueseConstruction = calculatorConstructionEditorialPtBr[toolId];
+    if (portugueseConstruction) return portugueseConstruction;
+
+    const portuguesePhoto = calculatorPhotoEditorialPtBr[toolId];
+    if (portuguesePhoto) return portuguesePhoto;
+
+    const portugueseEncoding = fastEncodingPtBr[toolId];
+    if (portugueseEncoding) return portugueseEncoding;
+
+    const portugueseUnits = fastUnitsPtBr[toolId];
+    if (portugueseUnits) return portugueseUnits;
+
+    const portugueseText = fastTextPtBr[toolId];
+    if (portugueseText) return portugueseText;
+
+    const portugueseMaker = fastMakerPtBr[toolId];
+    if (portugueseMaker) return portugueseMaker;
+
+    const portugueseCompletion = completionEditorialPtBr[toolId];
+    if (portugueseCompletion) return portugueseCompletion;
+  }
+
+  if (locale === 'de') {
+    const germanPdf = pdfEditorialDe[toolId];
+    if (germanPdf) return germanPdf;
+
+    const germanMath = calculatorMathEditorialDe[toolId];
+    if (germanMath) return germanMath;
+
+    const germanBusiness = calculatorBusinessEditorialDe[toolId];
+    if (germanBusiness) return germanBusiness;
+
+    const germanConstruction = calculatorConstructionEditorialDe[toolId];
+    if (germanConstruction) return germanConstruction;
+
+    const germanPhoto = calculatorPhotoEditorialDe[toolId];
+    if (germanPhoto) return germanPhoto;
+
+    const germanEncoding = fastEncodingDe[toolId];
+    if (germanEncoding) return germanEncoding;
+
+    const germanUnits = fastUnitsDe[toolId];
+    if (germanUnits) return germanUnits;
+
+    const germanText = fastTextDe[toolId];
+    if (germanText) return germanText;
+
+    const germanMaker = fastMakerDe[toolId];
+    if (germanMaker) return germanMaker;
+
+    const germanCompletion = completionEditorialDe[toolId];
+    if (germanCompletion) return germanCompletion;
+  }
+
+  if (locale === 'fr') {
+    const frenchPdf = pdfEditorialFr[toolId];
+    if (frenchPdf) return frenchPdf;
+
+    const frenchMath = calculatorMathEditorialFr[toolId];
+    if (frenchMath) return frenchMath;
+
+    const frenchBusiness = calculatorBusinessEditorialFr[toolId];
+    if (frenchBusiness) return frenchBusiness;
+
+    const frenchConstruction = calculatorConstructionEditorialFr[toolId];
+    if (frenchConstruction) return frenchConstruction;
+
+    const frenchPhoto = calculatorPhotoEditorialFr[toolId];
+    if (frenchPhoto) return frenchPhoto;
+
+    const frenchEncoding = fastEncodingFr[toolId];
+    if (frenchEncoding) return frenchEncoding;
+
+    const frenchUnits = fastUnitsFr[toolId];
+    if (frenchUnits) return frenchUnits;
+
+    const frenchText = fastTextFr[toolId];
+    if (frenchText) return frenchText;
+
+    const frenchMaker = fastMakerFr[toolId];
+    if (frenchMaker) return frenchMaker;
+
+    const frenchCompletion = completionEditorialFr[toolId];
+    if (frenchCompletion) return frenchCompletion;
+  }
+
+  const restEditorial =
+    editorialRest8[locale]?.[toolId];
+
+  if (restEditorial) {
+    return restEditorial;
+  }
+
+  const english = content[toolId]?.en;
+
+  if (!english) return null;
+
+  return translateToolEditorial(locale, english);
 }
 
 
